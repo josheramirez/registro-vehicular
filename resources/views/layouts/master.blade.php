@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="{{asset('plugins/bootstrap/css/starter-template.css')}}">
     <script src="https://kit.fontawesome.com/5564690f80.js" crossorigin="anonymous"></script>
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- SweetAlerts 2 -->
+    <script src="{{asset('plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
 
 </head>
 

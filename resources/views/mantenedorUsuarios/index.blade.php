@@ -7,7 +7,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Usuarios del sistema</div>
 
@@ -15,7 +15,9 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <button type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i></button>
+                            <button type="button" class="btn btn-success float-right verAgregar"
+                                title="Información solicitud" onclick="verAgregar()"><i
+                                    class="fas fa-plus"></i></button>
                         </div>
                     </div>
 
@@ -36,26 +38,34 @@
                                         <td>{{$usuario->name}}</td>
                                         <td>{{$usuario->email}}</td>
                                         <td>{{$usuario->active}}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary "><i class="fas fa-info-circle"></i></button>
-                                            <button type="button" class="btn btn-warning "><i class="fas fa-edit"></i></button>
-                                            <button type="button" class="btn btn-danger "><i class="fas fa-trash-alt"></i></button>
+                                        <td style="text-align:center">
+                                            <button type="button" class="btn btn-primary verUsuario"
+                                                name="{{$usuario->id}}" title="Información solicitud"
+                                                onclick="verUsuario(this.name)"><i
+                                                    class="fas fa-info-circle"></i></button>
+                                            <button type="button" class="btn btn-warning verEditar"
+                                                name="{{$usuario->id}}" title="Información solicitud"
+                                                onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger verEliminar"
+                                                name="{{$usuario->id}}" title="Información solicitud"
+                                                onclick="verEliminar(this.name)"><i
+                                                    class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
-        
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-
+<div id="modal"></div>
 <script>
     $(document).ready(function () {
         $('#tabla_usuarios').DataTable({
@@ -76,5 +86,49 @@
             },
         });
     });
+
+    function verAgregar(id) {
+        $(".verAgregar").attr('disabled', true);
+        ruta = @json(route('mantenedorusuarios.veragregar', ['id' => 'id_prof']));
+        ruta = ruta.replace('id_prof', id);
+        $('.modal').modal('hide');
+        $.get(ruta, function (data) {
+            $('#modal').html(data);
+            $('#modalVerAgregar').modal('show');
+        });
+    };
+
+    function verUsuario(id) {
+        $(".verUsuario").attr('disabled', true);
+        ruta = @json(route('mantenedorusuarios.verusuario', ['id' => 'id_prof']));
+        ruta = ruta.replace('id_prof', id);
+        $('.modal').modal('hide');
+        $.get(ruta, function (data) {
+            $('#modal').html(data);
+            $('#modalVerUsuario').modal('show');
+        });
+    };
+
+    function verEditar(id) {
+        $(".verEditar").attr('disabled', true);
+        ruta = @json(route('mantenedorusuarios.vereditar', ['id' => 'id_prof']));
+        ruta = ruta.replace('id_prof', id);
+        $('.modal').modal('hide');
+        $.get(ruta, function (data) {
+            $('#modal').html(data);
+            $('#modalVerEditar').modal('show');
+        });
+    };
+
+    function verEliminar(id) {
+        $(".verEliminar").attr('disabled', true);
+        ruta = @json(route('mantenedorusuarios.vereliminar', ['id' => 'id_prof']));
+        ruta = ruta.replace('id_prof', id);
+        $('.modal').modal('hide');
+        $.get(ruta, function (data) {
+            $('#modal').html(data);
+            $('#modalVerEliminar').modal('show');
+        });
+    };
 
 </script>
