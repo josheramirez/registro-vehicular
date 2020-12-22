@@ -14,6 +14,10 @@
 
 </style>
 
+<link rel="stylesheet" href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}">
+
+<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.min.js')}}"></script>
+
 <div id="modalVerAgregar" class="modal fade bd-example-modal-md" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
@@ -30,31 +34,44 @@
                         <form action="{{route('mantenedorusuarios.agregar')}}" method="POST"
                             id="formulario_agregar_usuario">
                             @csrf
+
                             <div class="row">
-                                <div class="col-md-6">
+
+                                <div class="col-md-12">
                                     <label for="name">Nombre </label>
-                                    <input type="text" class="form-control" name="name" id="name" value="">
+                                    <input type="text" class="form-control" name="name" id="name"
+                                        value="">
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-12 mt-4">
                                     <label for="email">E-mail </label>
-                                    <input type="text" class="form-control" name="email" id="email" value="">
+                                    <input type="text" class="form-control" name="email" id="email"
+                                        value="">
                                 </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <label for="telefono">Teléfono </label>
+                                    <input type="text" class="form-control" name="telefono" id="telefono"
+                                        value="">
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <label for="departamentos">Departamentos </label>
+                                </div>
+                                <div class="col-md-12" id="div_select">
+                                    <select name="departamentos[]" id="departamentos" class="form-control" multiple>
+                                        @foreach($departamentos as $dp)
+                                       
+                                        <option value="{{$dp->id}}">{{$dp->nombre}}</option>
+                                        
+
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
 
-                            <div class="row mt-4 mb-5">
-                                <div class="col-md-6">
-                                    <label for="telefono">Password </label>
-                                    <input type="password" class="form-control" name="password" id="password" value="">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="telefono">Confirmar Password </label>
-                                    <input type="password" class="form-control" name="password_confirmation"
-                                        id="password_confirmation" value="">
-                                </div>
-                            </div>
-
-                            <div class="row">
+                            <div class="row mt-5">
                                 <div class="col-md-12 text-center">
                                     <button type="submit" class="btn btn-success">Guardar</button>
                                 </div>
@@ -81,6 +98,10 @@
 <script>
     $(document).ready(function () {
         $(".verAgregar").attr('disabled', false);
+        $('#departamentos').selectpicker({
+            'noneSelectedText': 'Seleccione Departamento',
+            'multipleSeparator':','
+        });
     });
 
     $("#formulario_agregar_usuario").submit(function (e) {
@@ -97,7 +118,7 @@
                 if (data == 'usuario_creado') {
                     let timerInterval
                     Swal.fire({
-                        icon:'success',
+                        icon: 'success',
                         title: 'Usuario creado exitosamente',
                         html: 'Cerrando ventana en <b>5</b> segundos.',
                         timer: 5000,
@@ -105,14 +126,15 @@
                         willOpen: () => {
                             Swal.showLoading();
                             timerInterval = setInterval(() => {
-                            const content = Swal.getContent();
-                            if (content) {
-                                const b = content.querySelector('b');
-                                if (b) {
-                                
-                                b.textContent = Math.round(Swal.getTimerLeft()/1000);
+                                const content = Swal.getContent();
+                                if (content) {
+                                    const b = content.querySelector('b');
+                                    if (b) {
+
+                                        b.textContent = Math.round(Swal
+                                            .getTimerLeft() / 1000);
+                                    }
                                 }
-                            }
                             }, 1000);
                         },
                         onClose: () => {
@@ -128,7 +150,7 @@
                 }
             },
             error: function (error) {
-               
+
                 spanErrores(error);
             }
 

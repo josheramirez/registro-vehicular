@@ -14,6 +14,10 @@
 
 </style>
 
+<link rel="stylesheet" href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}">
+
+<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.min.js')}}"></script>
+
 <div id="modalVerEditar" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
@@ -32,16 +36,41 @@
                             @csrf
                             <input type="hidden" name="usuario_id" id="usuario_id" value="{{$usuario->id}}">
                             <div class="row">
-                                <div class="col-md-6">
+
+                                <div class="col-md-12">
                                     <label for="name">Nombre </label>
                                     <input type="text" class="form-control" name="name" id="name"
                                         value="{{$usuario->name}}">
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-12 mt-4">
                                     <label for="email">E-mail </label>
                                     <input type="text" class="form-control" name="email" id="email"
                                         value="{{$usuario->email}}">
                                 </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <label for="telefono">Teléfono </label>
+                                    <input type="text" class="form-control" name="telefono" id="telefono"
+                                        value="{{$usuario->telefono}}">
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <label for="departamentos">Departamentos </label>
+                                </div>
+                                <div class="col-md-12" id="div_select">
+                                    <select name="departamentos[]" id="departamentos" class="form-control" multiple>
+                                        @foreach($departamentos as $dp)
+                                        @if(in_array($dp->id,$du))
+                                        <option value="{{$dp->id}}" selected>{{$dp->nombre}}</option>
+                                        @else
+                                        <option value="{{$dp->id}}">{{$dp->nombre}}</option>
+                                        @endif
+
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
 
                             <div class="row mt-5">
@@ -62,7 +91,12 @@
 <script type="text/javascript" src="{!! asset('/js/utilidades.js') !!}"></script>
 <script>
     $(document).ready(function () {
+        console.log(document.getElementById('div_select').cientWidth)
         $(".verEditar").attr('disabled', false);
+        $('#departamentos').selectpicker({
+            'noneSelectedText': 'Seleccione Departamento',
+            'multipleSeparator': ','
+        });
     });
 
     $("#formulario_editar_usuario").submit(function (e) {
