@@ -36,7 +36,7 @@
                                 <div class="col-md-12">
                                     <label for="name">Nombre </label>
                                     <input type="text" class="form-control" name="name" id="name"
-                                        value="">
+                                        value="" onchange="mostrarPassword(this.value)">
                                 </div>
 
                                 <div class="col-md-12 mt-4">
@@ -63,6 +63,10 @@
 
                                         @endforeach
                                     </select>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <b id="password_label">Contraseña por defecto : </b>
                                 </div>
 
                             </div>
@@ -152,5 +156,32 @@
 
         });
     });
+
+    function mostrarPassword(value){
+        console.log(value.substring(0,2));
+        document.getElementById('password_label').innerHTML ='Contraseña por defecto : '+normalize(value.substring(0,2)) + '.123456';
+    }
+
+    var normalize = (function () {
+        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
+            to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+            mapping = {};
+
+        for (var i = 0, j = from.length; i < j; i++)
+            mapping[from.charAt(i)] = to.charAt(i);
+
+        return function (str) {
+            var ret = [];
+            for (var i = 0, j = str.length; i < j; i++) {
+                var c = str.charAt(i);
+                if (mapping.hasOwnProperty(str.charAt(i)))
+                    ret.push(mapping[c]);
+                else
+                    ret.push(c);
+            }
+            return ret.join('');
+        }
+
+    })();
 
 </script>

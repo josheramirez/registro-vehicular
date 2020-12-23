@@ -33,3 +33,5 @@ Route::get('/mantenedorUSuarios/ver_editar/{id}','MantenedorUsuariosController@v
 Route::post('/mantenedorUSuarios/editar','MantenedorUsuariosController@editar')->name('mantenedorusuarios.editar');
 
 Route::get('/mantenedorUSuarios/ver_eliminar/{id}','MantenedorUsuariosController@verEliminar')->name('mantenedorusuarios.vereliminar');
+
+Route::post('/mantenedorUSuarios/eliminar','MantenedorUsuariosController@eliminar')->name('mantenedorusuarios.eliminar');

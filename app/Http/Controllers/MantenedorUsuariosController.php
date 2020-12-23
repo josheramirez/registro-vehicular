@@ -112,6 +112,13 @@ class MantenedorUsuariosController extends Controller
         return view('mantenedorUsuarios/modalVerEliminar')->with('usuario', $usuario);
     }
 
+    public function eliminar(Request $request)
+    {
+        $datos = $request->all();
+        User::find($datos['usuario_id'])->delete();
+        return 'usuario_eliminado';
+    }
+
     public function eliminar_acentos($cadena)
     {
 
