@@ -60,7 +60,8 @@ class MantenedorUsuariosController extends Controller
     public function verInfo($id)
     {
         $usuario = User::find($id);
-        return view('mantenedorUsuarios/modalVerUsuario')->with('usuario', $usuario);
+        $du = DepartamentoUsuario::where('usuario_id',$id)->get();
+        return view('mantenedorUsuarios/modalVerUsuario')->with('usuario', $usuario)->with('du', $du);
     }
 
     public function verEditar($id)

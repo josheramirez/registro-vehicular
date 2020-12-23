@@ -14,9 +14,7 @@
 
 </style>
 
-<link rel="stylesheet" href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}">
 
-<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.min.js')}}"></script>
 
 <div id="modalVerEditar" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true">
@@ -91,7 +89,6 @@
 <script type="text/javascript" src="{!! asset('/js/utilidades.js') !!}"></script>
 <script>
     $(document).ready(function () {
-        console.log(document.getElementById('div_select').cientWidth)
         $(".verEditar").attr('disabled', false);
         $('#departamentos').selectpicker({
             'noneSelectedText': 'Seleccione Departamento',

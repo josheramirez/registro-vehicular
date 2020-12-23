@@ -36,11 +36,11 @@
             </div>
 
             <!-- Modal footer -->
-            <div class="modal-footer botones">
+            {{-- <div class="modal-footer botones">
                 <div>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>

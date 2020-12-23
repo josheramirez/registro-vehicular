@@ -14,10 +14,6 @@
 
 </style>
 
-<link rel="stylesheet" href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}">
-
-<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.min.js')}}"></script>
-
 <div id="modalVerAgregar" class="modal fade bd-example-modal-md" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">

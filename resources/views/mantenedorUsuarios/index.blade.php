@@ -1,10 +1,14 @@
 @extends('layouts.master')
+@section('content')
 
-<script src="{{asset('plugins/jquery/jquery-3.5.1.js')}}"></script>
+{{-- CARGA DE PLUGINS PARA DATATABLES --}}
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <link rel="stylesheet" href="{{asset('plugins/datatables/jquery.dataTables.min.css')}}">
 
-@section('content')
+{{-- CARGA DE PLUGINS PARA BOOTSTRAP SELECT JQUERY --}}
+<link rel="stylesheet" href="{{asset('plugins/bootstrap-select/css/bootstrap-select.min.css')}}">
+<script src="{{asset('plugins/bootstrap-select/js/bootstrap-select.min.js')}}"></script>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -64,8 +68,9 @@
         </div>
     </div>
 </div>
-@endsection
+
 <div id="modal"></div>
+
 <script>
     $(document).ready(function () {
         $('#tabla_usuarios').DataTable({
@@ -132,3 +137,5 @@
     };
 
 </script>
+
+@endsection

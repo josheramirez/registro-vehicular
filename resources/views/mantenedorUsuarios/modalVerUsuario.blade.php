@@ -20,7 +20,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-            <h5>Usuario ID : {{$usuario->id}}</h5>
+                <h5>Usuario ID : {{$usuario->id}}</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
@@ -30,17 +30,24 @@
                         <ul>
                             <li><b>Nombre</b> : {{$usuario->name}}</li>
                             <li><b>Correo electrónico</b> : {{$usuario->email}}</li>
+                            <li><b>Teléfono</b> : {{$usuario->telefono}}</li>
+                            <li><b>Departamentos</b> : </li>
+                            <ul>
+                                @foreach($du as $d)
+                                <li>{{$d->obtenerDepartamento()->nombre}}</li>
+                                @endforeach
+                            </ul>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <!-- Modal footer -->
-            <div class="modal-footer botones">
+            {{-- <div class="modal-footer botones">
                 <div>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
