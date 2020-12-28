@@ -27,11 +27,13 @@ class MantenedorUsuariosController extends Controller
     {
         $validatedData = $request->validate(
             [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:80'],
+                'telefono' => ['required', 'digits_between:5,12'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             ],
             [
-                'required' => 'Este campo es obligatorio!'
+                'required' => 'Este campo es obligatorio!',
+                'digits_between' => 'Este campo debe tener entre :min y :max digitos!'
             ]
         );
 
@@ -77,12 +79,13 @@ class MantenedorUsuariosController extends Controller
         $data = $request->all();
         $validatedData = $request->validate(
             [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$data['usuario_id']]
+                'name' => ['required', 'string', 'max:80'],
+                'telefono' => ['required', 'digits_between:5,12'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             ],
             [
                 'required' => 'Este campo es obligatorio!',
-                'email.unique' => 'El E-mail ya ha sido ingresado!'
+                'digits_between' => 'Este campo debe tener entre :min y :max digitos!'
             ]
         );
         $logeado = Auth::user();
