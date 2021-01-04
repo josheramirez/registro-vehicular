@@ -19,15 +19,13 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <button type="button" class="btn btn-success float-right verAgregar"
-                                title="Información solicitud" onclick="verAgregar()"><i
-                                    class="fas fa-plus"></i></button>
+                            <button type="button" class="btn btn-success btn-sm float-right verAgregar" title="Información solicitud" onclick="verAgregar()"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="tabla_usuarios">
+                            <table id="tabla_usuarios" class="display compact">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -43,17 +41,10 @@
                                         <td>{{$usuario->email}}</td>
                                         <td>{{$usuario->active}}</td>
                                         <td style="text-align:center">
-                                            <button type="button" class="btn btn-primary verUsuario"
-                                                name="{{$usuario->id}}" title="Información solicitud"
-                                                onclick="verUsuario(this.name)"><i
-                                                    class="fas fa-info-circle"></i></button>
-                                            <button type="button" class="btn btn-warning verEditar"
-                                                name="{{$usuario->id}}" title="Información solicitud"
-                                                onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
-                                            <button type="button" class="btn btn-danger verEliminar"
-                                                name="{{$usuario->id}}" title="Información solicitud"
-                                                onclick="verEliminar(this.name)"><i
-                                                    class="fas fa-trash-alt"></i></button>
+                                            <button type="button" class="btn btn-primary btn-sm verUsuario" name="{{$usuario->id}}" title="Información solicitud" onclick="verUsuario(this.name)"><i class="fas fa-info-circle"></i></button>
+                                            <button type="button" class="btn btn-success btn-sm verHistorial" name="{{$usuario->id}}" title="Información solicitud" onclick="verHistorial(this.name)"><i class="fa fa-history"></i></button>
+                                            <button type="button" class="btn btn-warning btn-sm verEditar" name="{{$usuario->id}}" title="Información solicitud" onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm verEliminar" name="{{$usuario->id}}" title="Información solicitud" onclick="verEliminar(this.name)"><i class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -72,7 +63,7 @@
 <div id="modal"></div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#tabla_usuarios').DataTable({
             language: {
                 "lengthMenu": "Mostrar _MENU_ registros por página",
@@ -97,7 +88,7 @@
         ruta = @json(route('mantenedorusuarios.veragregar', ['id' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
-        $.get(ruta, function (data) {
+        $.get(ruta, function(data) {
             $('#modal').html(data);
             $('#modalVerAgregar').modal('show');
         });
@@ -108,9 +99,20 @@
         ruta = @json(route('mantenedorusuarios.verusuario', ['id' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
-        $.get(ruta, function (data) {
+        $.get(ruta, function(data) {
             $('#modal').html(data);
             $('#modalVerUsuario').modal('show');
+        });
+    };
+
+    function verHistorial(id) {
+        $(".verHistorial").attr('disabled', true);
+        ruta = @json(route('mantenedorusuarios.verhistorial', ['id' => 'id_prof']));
+        ruta = ruta.replace('id_prof', id);
+        $('.modal').modal('hide');
+        $.get(ruta, function(data) {
+            $('#modal').html(data);
+            $('#modalVerHistorial').modal('show');
         });
     };
 
@@ -119,7 +121,7 @@
         ruta = @json(route('mantenedorusuarios.vereditar', ['id' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
-        $.get(ruta, function (data) {
+        $.get(ruta, function(data) {
             $('#modal').html(data);
             $('#modalVerEditar').modal('show');
         });
@@ -130,12 +132,11 @@
         ruta = @json(route('mantenedorusuarios.vereliminar', ['id' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
-        $.get(ruta, function (data) {
+        $.get(ruta, function(data) {
             $('#modal').html(data);
             $('#modalVerEliminar').modal('show');
         });
     };
-
 </script>
 
 @endsection

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
+            'codigo' => Str::random(12),
             'name' => 'Administrador',
             'email' => 'admin@admin.cl',
             'telefono' => '12345678',
@@ -39,6 +41,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
+            'codigo' => Str::random(12),
             'name' => 'Funcionario',
             'email' => 'funcionario@funcionario.cl',
             'telefono' => '12345678',

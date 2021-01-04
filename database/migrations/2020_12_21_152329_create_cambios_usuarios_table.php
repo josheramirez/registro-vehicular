@@ -15,12 +15,13 @@ class CreateCambiosUsuariosTable extends Migration
     {
         Schema::create('cambios_usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('usuario_modificado');
+            $table->unsignedBigInteger('usuario_antiguo');
+            $table->unsignedBigInteger('usuario_actual');
             $table->unsignedBigInteger('usuario_modificador');
             $table->timestamps();
 
-            $table->foreign('usuario_modificado')->references('id')->on('users');
-
+            $table->foreign('usuario_antiguo')->references('id')->on('users');
+            $table->foreign('usuario_actual')->references('id')->on('users');
             $table->foreign('usuario_modificador')->references('id')->on('users');
         });
     }

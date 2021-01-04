@@ -15,7 +15,8 @@ class MantenedorUsuariosController extends Controller
 {
     public function index()
     {
-        return view('mantenedorUsuarios/index')->with('usuarios', User::all());
+        $usuarios = User::where('active',1)->get();
+        return view('mantenedorUsuarios/index')->with('usuarios', User::where('active',1)->get());
     }
 
     public function verAgregar()
@@ -67,6 +68,10 @@ class MantenedorUsuariosController extends Controller
         return view('mantenedorUsuarios/modalVerUsuario')->with('usuario', $usuario)->with('du', $du);
     }
 
+    public function verHistorial($id){
+        dd($id);
+    }
+
     public function verEditar($id)
     {
         $usuario = User::find($id);
@@ -90,32 +95,41 @@ class MantenedorUsuariosController extends Controller
             ]
         );
 
+        //OBTIENE AL USUARIO LOGEADO (MODIFICADOR)
         $logeado = Auth::user();
+        //OBTIENE EL USUARIO A EDITAR (ANTIGUO)
         $usuario = User::find($data['usuario_id']);
-        $usuario->name = $data['name'];
-        $usuario->email = $data['email'];
-        $usuario->telefono = $data['telefono'];
-        $usuario->email_old = $usuario->email;
+        //COPIO AL USUARIO ANTIGUO Y CREA AL NUEVO
+        $usuario_nuevo = $usuario->replicate();
+        //OBTIENE EL EMAIL DEL USUARIO, YA QUE EL CAMPO EMAIL ES UNICO
+        $email = $usuario->email;
+        //ASIGNO EL EMAIL A UNA COLUMNA NO UNICA
+        $usuario->email_old =  $email;
+        //DEJA NULO EL CAMPO EMAIL Y DESACTIVA AL USUARIO
         $usuario->email = NULL;
         $usuario->active = 0;
         $usuario->save();
 
-        $usuario_nuevo = $usuario->replicate();
-        $cambio_usuario = new CambioUsuario();
-        $usuario->delete();
-
-        $usuario_nuevo->email = $usuario_nuevo->email_old;
+        //CONSTRUYE AL USUARIO NUEVO
+        $usuario_nuevo->name = $data['name'];
+        $usuario_nuevo->email = $data['email'];
+        $usuario_nuevo->telefono = $data['telefono'];
+        $usuario_nuevo->email =  $email;
         $usuario_nuevo->email_old = NULL;
         $usuario_nuevo->active = 1;
         $usuario_nuevo->save();
 
-        $cambio_usuario->usuario_modificado = $usuario_nuevo->id;
+        //SE CREA EL OBJETO QUE GUARDA LA INFORMACION DE LOS CAMBIOS EN BD
+        $cambio_usuario = new CambioUsuario();
+        $cambio_usuario->usuario_antiguo = $usuario->id;
+        $cambio_usuario->usuario_actual = $usuario_nuevo->id;
         $cambio_usuario->usuario_modificador = $logeado->id;
         $cambio_usuario->save();
         
-
+        //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
         $du = DepartamentoUsuario::where('usuario_id',$data['usuario_id'])->delete();
 
+        //ASIGNA LOS DEPARTAMENTOS PARA LE NUEVO USUARIO
         $departamentos = $data['departamentos'];
         foreach($departamentos as $dp){
             $du = new DepartamentoUsuario();

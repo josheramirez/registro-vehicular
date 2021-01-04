@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Auth::routes();
@@ -35,3 +35,5 @@ Route::post('/mantenedor_usuarios/editar','MantenedorUsuariosController@editar')
 Route::get('/mantenedor_usuarios/ver_eliminar/{id}','MantenedorUsuariosController@verEliminar')->name('mantenedorusuarios.vereliminar');
 
 Route::post('/mantenedor_usuarios/eliminar','MantenedorUsuariosController@eliminar')->name('mantenedorusuarios.eliminar');
+
+Route::get('/mantenedor_usuarios/ver_historial/{id}','MantenedorUsuariosController@verHistorial')->name('mantenedorusuarios.verhistorial');
