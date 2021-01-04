@@ -20,18 +20,18 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/mantenedorUSuarios','MantenedorUsuariosController@index')->name('mantenedorusuarios.index');
+Route::get('/mantenedor_usuarios','MantenedorUsuariosController@index')->name('mantenedorusuarios.index');
 
-Route::get('/mantenedorUSuarios/ver_agregar/{id}','MantenedorUsuariosController@verAgregar')->name('mantenedorusuarios.veragregar');
+Route::get('/mantenedor_usuarios/ver_agregar/{id}','MantenedorUsuariosController@verAgregar')->name('mantenedorusuarios.veragregar');
 
-Route::post('/mantenedorUSuarios/agregar','MantenedorUsuariosController@agregar')->name('mantenedorusuarios.agregar');
+Route::post('/mantenedor_usuarios/agregar','MantenedorUsuariosController@agregar')->name('mantenedorusuarios.agregar');
 
-Route::get('/mantenedorUSuarios/ver_info/{id}','MantenedorUsuariosController@verInfo')->name('mantenedorusuarios.verusuario');
+Route::get('/mantenedor_usuarios/ver_info/{id}','MantenedorUsuariosController@verInfo')->name('mantenedorusuarios.verusuario');
 
-Route::get('/mantenedorUSuarios/ver_editar/{id}','MantenedorUsuariosController@verEditar')->name('mantenedorusuarios.vereditar');
+Route::get('/mantenedor_usuarios/ver_editar/{id}','MantenedorUsuariosController@verEditar')->name('mantenedorusuarios.vereditar');
 
-Route::post('/mantenedorUSuarios/editar','MantenedorUsuariosController@editar')->name('mantenedorusuarios.editar');
+Route::post('/mantenedor_usuarios/editar','MantenedorUsuariosController@editar')->name('mantenedorusuarios.editar');
 
-Route::get('/mantenedorUSuarios/ver_eliminar/{id}','MantenedorUsuariosController@verEliminar')->name('mantenedorusuarios.vereliminar');
+Route::get('/mantenedor_usuarios/ver_eliminar/{id}','MantenedorUsuariosController@verEliminar')->name('mantenedorusuarios.vereliminar');
 
-Route::post('/mantenedorUSuarios/eliminar','MantenedorUsuariosController@eliminar')->name('mantenedorusuarios.eliminar');
+Route::post('/mantenedor_usuarios/eliminar','MantenedorUsuariosController@eliminar')->name('mantenedorusuarios.eliminar');
