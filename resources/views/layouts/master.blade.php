@@ -8,7 +8,7 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
     <title>Template · Mantenedor</title>
-
+    <link rel="shortcut icon" href="#">
     <script src="{{asset('plugins/jquery/jquery-3.5.1.min.js')}}"></script>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/starter-template/">
