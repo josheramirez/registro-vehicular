@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Departamento;
 use App\DepartamentoUsuario;
+use App\CambioUsuario;
 use Illuminate\Support\Facades\Auth;
 
 class MantenedorUsuariosController extends Controller
@@ -81,26 +82,44 @@ class MantenedorUsuariosController extends Controller
             [
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255','unique:users,email,NULL,id,deleted_at,NUL'],
             ],
             [
                 'required' => 'Este campo es obligatorio!',
                 'digits_between' => 'Este campo debe tener entre :min y :max digitos!'
             ]
         );
+
         $logeado = Auth::user();
         $usuario = User::find($data['usuario_id']);
         $usuario->name = $data['name'];
         $usuario->email = $data['email'];
         $usuario->telefono = $data['telefono'];
+        $usuario->email_old = $usuario->email;
+        $usuario->email = NULL;
+        $usuario->active = 0;
         $usuario->save();
+
+        $usuario_nuevo = $usuario->replicate();
+        $cambio_usuario = new CambioUsuario();
+        $usuario->delete();
+
+        $usuario_nuevo->email = $usuario_nuevo->email_old;
+        $usuario_nuevo->email_old = NULL;
+        $usuario_nuevo->active = 1;
+        $usuario_nuevo->save();
+
+        $cambio_usuario->usuario_modificado = $usuario_nuevo->id;
+        $cambio_usuario->usuario_modificador = $logeado->id;
+        $cambio_usuario->save();
+        
 
         $du = DepartamentoUsuario::where('usuario_id',$data['usuario_id'])->delete();
 
         $departamentos = $data['departamentos'];
         foreach($departamentos as $dp){
             $du = new DepartamentoUsuario();
-            $du->usuario_id = $usuario->id;
+            $du->usuario_id = $usuario_nuevo->id;
             $du->departamento_id = $dp;
             $du->creador_id = $logeado->id;
             $du->save();

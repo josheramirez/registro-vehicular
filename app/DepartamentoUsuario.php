@@ -9,6 +9,7 @@ class DepartamentoUsuario extends Model
 {
     use SoftDeletes;
     protected $table = 'departamentos_usuarios';
+    protected $fillable = ['usuario_modificado','usuario_modificador'];
 
     public function obtenerDepartamento()
     {
