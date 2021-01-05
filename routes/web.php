@@ -22,6 +22,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/mantenedor_usuarios','MantenedorUsuariosController@index')->name('mantenedorusuarios.index');
 
+Route::get('/mantenedor_usuarios/inactivos','MantenedorUsuariosController@inactivos')->name('mantenedorusuarios.inactivos');
+
+Route::get('/mantenedor_usuarios/revertir/{id}','MantenedorUsuariosController@revertir')->name('mantenedorusuarios.revertir');
+
 Route::get('/mantenedor_usuarios/ver_agregar/{id}','MantenedorUsuariosController@verAgregar')->name('mantenedorusuarios.veragregar');
 
 Route::post('/mantenedor_usuarios/agregar','MantenedorUsuariosController@agregar')->name('mantenedorusuarios.agregar');

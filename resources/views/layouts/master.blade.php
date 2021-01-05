@@ -60,8 +60,10 @@
                         aria-haspopup="true" aria-expanded="false">Mantenedores</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown01">
                         <a class="dropdown-item" href="{{route('mantenedorusuarios.index')}}">Usuarios</a>
+                        <a class="dropdown-item" href="{{route('mantenedorusuarios.inactivos')}}">Inactivos</a>
                     </div>
                 </li>
+               
             </ul>
 
             <ul class="navbar-nav" style="margin-right: 15%">

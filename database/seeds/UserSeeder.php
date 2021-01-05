@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'codigo' => Str::random(12),
+            'codigo' => strtoupper(Str::random(12)),
             'name' => 'Administrador',
             'email' => 'admin@admin.cl',
             'telefono' => '12345678',
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'codigo' => Str::random(12),
+            'codigo' => strtoupper(Str::random(12)),
             'name' => 'Funcionario',
             'email' => 'funcionario@funcionario.cl',
             'telefono' => '12345678',

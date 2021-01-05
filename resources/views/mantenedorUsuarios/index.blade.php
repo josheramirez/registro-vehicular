@@ -25,7 +25,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="tabla_usuarios" class="display compact">
+                            <table id="tabla_usuarios" class="display compact text-center">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -39,7 +39,11 @@
                                     <tr>
                                         <td>{{$usuario->name}}</td>
                                         <td>{{$usuario->email}}</td>
-                                        <td>{{$usuario->active}}</td>
+                                        @if($usuario->active==1)
+                                        <td>SI</td>
+                                        @else
+                                        <td>NO</td>
+                                        @endif
                                         <td style="text-align:center">
                                             <button type="button" class="btn btn-primary btn-sm verUsuario" name="{{$usuario->id}}" title="Información solicitud" onclick="verUsuario(this.name)"><i class="fas fa-info-circle"></i></button>
                                             <button type="button" class="btn btn-success btn-sm verHistorial" name="{{$usuario->id}}" title="Información solicitud" onclick="verHistorial(this.name)"><i class="fa fa-history"></i></button>

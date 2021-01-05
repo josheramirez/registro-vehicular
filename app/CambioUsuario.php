@@ -16,4 +16,9 @@ class CambioUsuario extends Model
         $usuarios->push($this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','active')->first());
         return $usuarios;
     }
+
+    public function obtenerModificador()
+    {
+        return $this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','active')->first();
+    }
 }

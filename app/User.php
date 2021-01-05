@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'codigo','name', 'email', 'password',
     ];
 
     /**
@@ -38,4 +39,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function obtenerDepartamentos()
+    {
+        // dd(DepartamentoUsuario::where('usuario_id',$this->id)->get());
+        $departamentos = $this->hasMany('App\DepartamentoUsuario', 'usuario_id', 'id')->withTrashed()->select('id','usuario_id','departamento_id','creador_id')->get();
+        foreach($departamentos as $dp){
+            $dp['nombre_departamento'] = $dp->obtenerDepartamento()->nombre;
+        }
+        return $departamentos;
+    }
+
+    public function obtenerCambio()
+    {
+        // dd(DepartamentoUsuario::where('usuario_id',$this->id)->get());
+        $modificador = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at')->first();
+        return $modificador;
+    }
 }

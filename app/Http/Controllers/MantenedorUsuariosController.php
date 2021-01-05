@@ -10,19 +10,20 @@ use App\Departamento;
 use App\DepartamentoUsuario;
 use App\CambioUsuario;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class MantenedorUsuariosController extends Controller
 {
     public function index()
     {
-        $usuarios = User::where('active',1)->get();
-        return view('mantenedorUsuarios/index')->with('usuarios', User::where('active',1)->get());
+        $usuarios = User::where('active', 1)->get();
+        return view('mantenedorUsuarios/index')->with('usuarios', User::where('active', 1)->get());
     }
 
     public function verAgregar()
     {
         $departamentos = Departamento::all();
-        return view('mantenedorUsuarios/modalVerAgregar')->with('departamentos',$departamentos);
+        return view('mantenedorUsuarios/modalVerAgregar')->with('departamentos', $departamentos);
     }
 
     public function agregar(Request $request)
@@ -39,9 +40,18 @@ class MantenedorUsuariosController extends Controller
             ]
         );
 
+        $codigos = User::groupBy('codigo')->pluck('codigo')->toArray();
+        $nuevo_codigo = strtoupper(Str::random(12));
+
+
+        while (in_array($nuevo_codigo, $codigos)) {
+            $nuevo_codigo = strtoupper(Str::random(12));
+        }
+
         $logeado = Auth::user();
         $data = $request->all();
         $usuario = new User();
+        $usuario->codigo = $nuevo_codigo;
         $usuario->name = $data['name'];
         $usuario->email = $data['email'];
         $usuario->telefono = $data['telefono'];
@@ -51,7 +61,7 @@ class MantenedorUsuariosController extends Controller
         $usuario->save();
 
         $departamentos = $data['departamentos'];
-        foreach($departamentos as $dp){
+        foreach ($departamentos as $dp) {
             $du = new DepartamentoUsuario();
             $du->usuario_id = $usuario->id;
             $du->departamento_id = $dp;
@@ -64,20 +74,34 @@ class MantenedorUsuariosController extends Controller
     public function verInfo($id)
     {
         $usuario = User::find($id);
-        $du = DepartamentoUsuario::where('usuario_id',$id)->get();
+        $du = DepartamentoUsuario::where('usuario_id', $id)->get();
         return view('mantenedorUsuarios/modalVerUsuario')->with('usuario', $usuario)->with('du', $du);
     }
 
-    public function verHistorial($id){
-        dd($id);
+    public function verHistorial($id)
+    {
+        $usuario = User::find($id);
+        $historial = User::where('codigo', $usuario->codigo)->select('id', 'codigo', 'name', 'email', 'email_old', 'telefono', 'active')->get();
+        foreach ($historial as $key => $his) {
+            $historial[$key]['departamentos'] = $his->obtenerDepartamentos();
+            if ($his->obtenerCambio()) {
+                $cambio = $his->obtenerCambio();
+                $historial[$key]['modificador'] = $cambio->obtenerModificador();
+                $historial[$key]['fecha_cambio'] = $this->fechaVistas($cambio->created_at);
+            } else {
+                $historial[$key]['modificador'] = null;
+                $historial[$key]['fecha_cambio'] = null;
+            }
+        }
+        return view('mantenedorUsuarios/modalVerHistorial')->with('usuario', $usuario)->with('historial', $historial);
     }
 
     public function verEditar($id)
     {
         $usuario = User::find($id);
         $departamentos = Departamento::all();
-        $du = DepartamentoUsuario::where('usuario_id',$id)->pluck('departamento_id')->toArray();
-        return view('mantenedorUsuarios/modalVerEditar')->with('usuario', $usuario)->with('departamentos',$departamentos)->with('du',$du);
+        $du = DepartamentoUsuario::where('usuario_id', $id)->pluck('departamento_id')->toArray();
+        return view('mantenedorUsuarios/modalVerEditar')->with('usuario', $usuario)->with('departamentos', $departamentos)->with('du', $du);
     }
 
     public function editar(Request $request)
@@ -87,7 +111,7 @@ class MantenedorUsuariosController extends Controller
             [
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
-                'email' => ['required', 'string', 'email', 'max:255','unique:users,email,NULL,id,deleted_at,NUL'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,NULL,id,deleted_at,NUL'],
             ],
             [
                 'required' => 'Este campo es obligatorio!',
@@ -125,13 +149,13 @@ class MantenedorUsuariosController extends Controller
         $cambio_usuario->usuario_actual = $usuario_nuevo->id;
         $cambio_usuario->usuario_modificador = $logeado->id;
         $cambio_usuario->save();
-        
+
         //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
-        $du = DepartamentoUsuario::where('usuario_id',$data['usuario_id'])->delete();
+        $du = DepartamentoUsuario::where('usuario_id', $data['usuario_id'])->delete();
 
         //ASIGNA LOS DEPARTAMENTOS PARA LE NUEVO USUARIO
         $departamentos = $data['departamentos'];
-        foreach($departamentos as $dp){
+        foreach ($departamentos as $dp) {
             $du = new DepartamentoUsuario();
             $du->usuario_id = $usuario_nuevo->id;
             $du->departamento_id = $dp;
@@ -151,8 +175,30 @@ class MantenedorUsuariosController extends Controller
     public function eliminar(Request $request)
     {
         $datos = $request->all();
-        User::find($datos['usuario_id'])->delete();
+        $usuario = User::find($datos['usuario_id']);
+        $usuario->active = 0;
+        $usuario->save();
         return 'usuario_eliminado';
+    }
+
+    public function inactivos()
+    {
+        $usuarios_activos = User::groupBy('codigo')->where('active', 1)->pluck('codigo')->toArray();
+
+        $usuarios = User::orderBy('id', 'desc')->where('active', 0)->whereNotIn('codigo',$usuarios_activos)->get();
+        $usuarios = $usuarios->groupBy('codigo');
+        $inactivos = collect();
+        foreach ($usuarios as $u) {
+            $inactivos->push($u[0]);
+        }
+        return view('mantenedorUsuarios/inactivos')->with('inactivos', $inactivos);
+    }
+
+    public function revertir($id){
+        $usuario = User::find($id);
+        $usuario->active = 1;
+        $usuario->save();
+        return 'usuario_recuperado';
     }
 
     public function eliminar_acentos($cadena)
@@ -203,5 +249,10 @@ class MantenedorUsuariosController extends Controller
         return $cadena;
     }
 
-    
+    public static function fechaVistas($fecha)
+    {
+        $fecha = explode(' ', $fecha)[0];
+        $fecha = join('/', array_reverse(explode('-', $fecha)));
+        return $fecha;
+    }
 }
