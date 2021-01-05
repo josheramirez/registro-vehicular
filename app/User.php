@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'codigo','name', 'email', 'password',
+        'codigo','name', 'email', 'password','activo','tipo_usuario',
     ];
 
     /**
@@ -55,5 +55,11 @@ class User extends Authenticatable
         // dd(DepartamentoUsuario::where('usuario_id',$this->id)->get());
         $modificador = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at')->first();
         return $modificador;
+    }
+
+    public function obtenerTipoUsuario()
+    {
+        $tipo_usuario = $this->hasOne('App\TipoUsuario', 'id', 'tipo_usuario')->first();
+        return $tipo_usuario;
     }
 }

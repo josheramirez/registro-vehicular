@@ -20,12 +20,15 @@ class CreateUsersTable extends Migration
             $table->string('email',191)->unique()->nullable();
             $table->string('email_old',191)->nullable();
             $table->string('telefono',15)->nullable();
-            $table->tinyInteger('active')->default(1);
+            $table->tinyInteger('activo')->default(1);
+            $table->unsignedInteger('tipo_usuario');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('tipo_usuario')->references('id')->on('tipos_usuario');
 
         });
     }

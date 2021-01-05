@@ -11,14 +11,14 @@ class CambioUsuario extends Model
     public function obtenerUsuarios()
     {
         $usuarios = collect();
-        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_antiguo')->select('name','email','email_old','telefono','active')->first());
-        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_actual')->select('name','email','email_old','telefono','active')->first());
-        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','active')->first());
+        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_antiguo')->select('name','email','email_old','telefono','activo')->first());
+        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_actual')->select('name','email','email_old','telefono','activo')->first());
+        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','activo')->first());
         return $usuarios;
     }
 
     public function obtenerModificador()
     {
-        return $this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','active')->first();
+        return $this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','activo')->first();
     }
 }

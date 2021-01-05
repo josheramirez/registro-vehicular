@@ -39,7 +39,7 @@
                                     <tr>
                                         <td>{{$inactivo->name}}</td>
                                         <td>{{$inactivo->email}}</td>
-                                        @if($inactivo->active==1)
+                                        @if($inactivo->activo==1)
                                         <td>SI</td>
                                         @else
                                         <td>NO</td>

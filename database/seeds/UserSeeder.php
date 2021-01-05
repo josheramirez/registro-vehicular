@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
             'name' => 'Administrador',
             'email' => 'admin@admin.cl',
             'telefono' => '12345678',
-            'active' => 1,
+            'activo' => 1,
+            'tipo_usuario' => 1,
             'password' => Hash::make('123456')
         ]);
 
@@ -45,7 +46,8 @@ class UserSeeder extends Seeder
             'name' => 'Funcionario',
             'email' => 'funcionario@funcionario.cl',
             'telefono' => '12345678',
-            'active' => 1,
+            'activo' => 1,
+            'tipo_usuario' => 2,
             'password' => Hash::make('123456')
         ]);
 

@@ -39,7 +39,7 @@
                                     <tr>
                                         <td>{{$usuario->name}}</td>
                                         <td>{{$usuario->email}}</td>
-                                        @if($usuario->active==1)
+                                        @if($usuario->activo==1)
                                         <td>SI</td>
                                         @else
                                         <td>NO</td>

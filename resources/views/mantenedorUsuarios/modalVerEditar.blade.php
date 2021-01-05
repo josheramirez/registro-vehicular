@@ -53,6 +53,22 @@
                                         value="{{$usuario->telefono}}">
                                 </div>
 
+                                
+                                <div class="col-md-12 mt-4">
+                                    <label for="tipo_usuario">Tipo de usuario </label>
+                                </div>
+                                <div class="col-md-12" id="div_select_usuario">
+                                    <select name="tipo_usuario" id="tipo_usuario" class="form-control">
+                                        @foreach($tipos_usuario as $tu)
+                                        @if($tu->id == $usuario->tipo_usuario))
+                                        <option value="{{$tu->id}}" selected>{{$tu->nombre}}</option>
+                                        @else
+                                        <option value="{{$tu->id}}">{{$tu->nombre}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <div class="col-md-12 mt-4">
                                     <label for="departamentos">Departamentos </label>
                                 </div>

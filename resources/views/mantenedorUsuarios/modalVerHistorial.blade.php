@@ -33,12 +33,13 @@
                     <div class="col-md-10 offset-md-1">
 
                         <div class="row">
-                            <table class="table table-bordered table-sm text-center">
+                            <table class="table table-bordered table-sm text-center" style="font-size: 14.5px;">
                                 <thead style="text-align: center;">
                                     <tr>
                                         <th>Nombre</th>
                                         <th>E-mail</th>
                                         <th>Teléfono</th>
+                                        <th>Tipo de usuario</th>
                                         <th>Departamentos</th>
                                         <th>Modificador</th>
                                         <th>Fecha modificación</th>
@@ -47,7 +48,7 @@
                                 <tbody>
                                     @foreach($historial as $key1 => $his)
 
-                                    @if($his['active']==1)
+                                    @if($his['activo']==1)
                                     <tr style="color:green; font-weight: bold;">
                                     @else
                                     <tr>
@@ -55,13 +56,15 @@
                                     
                                         <td>{{$his['name']}}</td>
 
-                                        @if($his['active']==1)
+                                        @if($his['activo']==1)
                                         <td>{{$his['email']}}</td>
                                         @else
                                         <td>{{$his['email_old']}}</td>
                                         @endif
 
                                         <td>{{$his['telefono']}}</td>
+
+                                        <td>{{$his['tipo_usuario']}}</td>
 
                                         <td>
                                             <ul style="margin-bottom: 0;">
