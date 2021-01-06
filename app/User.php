@@ -40,9 +40,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS DEPARTAMENTOS A LOS QUE PERTENECE EL USUARIO
     public function obtenerDepartamentos()
     {
-        // dd(DepartamentoUsuario::where('usuario_id',$this->id)->get());
         $departamentos = $this->hasMany('App\DepartamentoUsuario', 'usuario_id', 'id')->withTrashed()->select('id','usuario_id','departamento_id','creador_id')->get();
         foreach($departamentos as $dp){
             $dp['nombre_departamento'] = $dp->obtenerDepartamento()->nombre;
@@ -50,13 +50,14 @@ class User extends Authenticatable
         return $departamentos;
     }
 
+    //FUNCION QUE OBTIENE LA INFORMACION DEL CAMBIO CORRESPONDIENTE AL USUARIO
     public function obtenerCambio()
     {
-        // dd(DepartamentoUsuario::where('usuario_id',$this->id)->get());
-        $modificador = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at')->first();
-        return $modificador;
+        $cambio = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at')->first();
+        return $cambio;
     }
 
+    //FUNCION QUE RETORNA EL TIPO DE USUARIO DEL USUARIO
     public function obtenerTipoUsuario()
     {
         $tipo_usuario = $this->hasOne('App\TipoUsuario', 'id', 'tipo_usuario')->first();

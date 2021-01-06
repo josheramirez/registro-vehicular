@@ -11,6 +11,7 @@ class DepartamentoUsuario extends Model
     protected $table = 'departamentos_usuarios';
     protected $fillable = ['usuario_modificado','usuario_modificador'];
 
+    //OBTIENE EL DEPARTAMENTO CORRESPONDIENTE AL OBJETO DEPARTAMENTO USUARIO
     public function obtenerDepartamento()
     {
         return $this->hasOne('App\Departamento', 'id', 'departamento_id')->first();

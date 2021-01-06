@@ -8,6 +8,7 @@ class CambioUsuario extends Model
 {
     protected $table = 'cambios_usuarios';
 
+    //OBTIENE LOS USUARIOS PARTICIPANTES EN EL CAMBIO
     public function obtenerUsuarios()
     {
         $usuarios = collect();
@@ -17,6 +18,7 @@ class CambioUsuario extends Model
         return $usuarios;
     }
 
+    //OBTIENE INFORMACION DEL USUARIO MODIFICADOR, SE PODRÍA HABER USADO LA ANTERIOR
     public function obtenerModificador()
     {
         return $this->hasOne('App\User', 'id', 'usuario_modificador')->select('name','email','email_old','telefono','activo')->first();
