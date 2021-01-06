@@ -22,7 +22,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5>Formulario creacion de usuarios</h5>
+                <h5>Formulario creación de usuarios</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->

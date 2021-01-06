@@ -18,9 +18,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                        <div class="col-md-12 mb-4">
-                            <button type="button" class="btn btn-success btn-sm float-right verAgregar" title="Información solicitud" onclick="verAgregar()"><i class="fas fa-plus"></i></button>
-                        </div>
+                       
                     </div>
 
                     <div class="row">
@@ -28,7 +26,7 @@
                             <table id="tabla_usuarios" class="display compact text-center">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Nombre</th>
                                         <th>E-mail</th>
                                         <th>Activo</th>
                                         <th>Acciones</th>
@@ -45,7 +43,7 @@
                                         <td>NO</td>
                                         @endif
                                         <td style="text-align:center">
-                                            <button type="button" class="btn btn-success btn-sm revertirUsuario" name="{{$inactivo->id}}" title="Información solicitud" onclick="revertirUsuario(this.name)"><i class="fa fa-history"></i></button>
+                                            <button type="button" class="btn btn-success btn-sm revertirUsuario" name="{{$inactivo->id}}" title="Revertir/Reactivar usuario" onclick="revertirUsuario(this.name)"><i class="fa fa-history"></i></button>
 
                                         </td>
                                     </tr>

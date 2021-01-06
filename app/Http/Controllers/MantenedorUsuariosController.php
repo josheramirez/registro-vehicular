@@ -15,10 +15,15 @@ use App\TipoUsuario;
 
 class MantenedorUsuariosController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        $this->middleware('Roles:1');
+    }
+
     public function index()
     {
         $usuarios = User::where('activo', 1)->get();
-        return view('mantenedorUsuarios/index')->with('usuarios', User::where('activo', 1)->get());
+        return view('mantenedorUsuarios/index')->with('usuarios', $usuarios);
     }
 
     public function verAgregar()

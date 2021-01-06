@@ -50,10 +50,10 @@
 
                                     @if($his['activo']==1)
                                     <tr style="color:green; font-weight: bold;">
-                                    @else
+                                        @else
                                     <tr>
-                                    @endif
-                                    
+                                        @endif
+
                                         <td>{{$his['name']}}</td>
 
                                         @if($his['activo']==1)
@@ -93,7 +93,11 @@
                             </table>
                         </div>
 
-                       
+                        <div class="row" style="margin-top: -10px; margin-left:5px">
+                            <b style="font-size: 12px; color:gray;">* La fila resaltada en color VERDE corresponde al usuario actualmente activo en el sistema.</b></label>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

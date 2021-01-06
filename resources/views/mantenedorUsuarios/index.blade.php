@@ -19,7 +19,7 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <button type="button" class="btn btn-success btn-sm float-right verAgregar" title="Información solicitud" onclick="verAgregar()"><i class="fas fa-plus"></i></button>
+                            <button type="button" class="btn btn-success btn-sm float-right verAgregar" title="Creación de usuario" onclick="verAgregar()"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
 
@@ -28,7 +28,7 @@
                             <table id="tabla_usuarios" class="display compact text-center">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Nombre</th>
                                         <th>E-mail</th>
                                         <th>Activo</th>
                                         <th>Acciones</th>
@@ -45,10 +45,10 @@
                                         <td>NO</td>
                                         @endif
                                         <td style="text-align:center">
-                                            <button type="button" class="btn btn-primary btn-sm verUsuario" name="{{$usuario->id}}" title="Información solicitud" onclick="verUsuario(this.name)"><i class="fas fa-info-circle"></i></button>
-                                            <button type="button" class="btn btn-success btn-sm verHistorial" name="{{$usuario->id}}" title="Información solicitud" onclick="verHistorial(this.name)"><i class="fa fa-history"></i></button>
-                                            <button type="button" class="btn btn-warning btn-sm verEditar" name="{{$usuario->id}}" title="Información solicitud" onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
-                                            <button type="button" class="btn btn-danger btn-sm verEliminar" name="{{$usuario->id}}" title="Información solicitud" onclick="verEliminar(this.name)"><i class="fas fa-trash-alt"></i></button>
+                                            <button type="button" class="btn btn-primary btn-sm verUsuario" name="{{$usuario->id}}" title="Información del usuario" onclick="verUsuario(this.name)"><i class="fas fa-info-circle"></i></button>
+                                            <button type="button" class="btn btn-success btn-sm verHistorial" name="{{$usuario->id}}" title="Historial de cambios del usuario" onclick="verHistorial(this.name)"><i class="fa fa-history"></i></button>
+                                            <button type="button" class="btn btn-warning btn-sm verEditar" name="{{$usuario->id}}" title="Edición de usuario" onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm verEliminar" name="{{$usuario->id}}" title="Eliminarción de usuario" onclick="verEliminar(this.name)"><i class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
