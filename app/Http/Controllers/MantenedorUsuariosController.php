@@ -30,13 +30,12 @@ class MantenedorUsuariosController extends Controller
 
     public function agregar(Request $request)
     {
-
         $validatedData = $request->validate(
             [
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
                 'departamentos' => ['required'],
-                'tipos_usuario' => ['required'],
+                'tipo_usuario' => ['required'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             ],
             [
