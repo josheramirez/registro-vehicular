@@ -11,11 +11,9 @@
     input:read-only {
         background-color: white;
     }
-
 </style>
 
-<div id="modalVerUsuario" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalVerUsuario" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -37,24 +35,23 @@
                                 <li>{{$d->obtenerDepartamento()->nombre}}</li>
                                 @endforeach
                             </ul>
+                            <li><b>Tipo de usuario</b> : {{$usuario->obtenerTipoUsuario()->nombre}} </li>
+                            <li><b>Estado</b> :
+                                @if($usuario->activo==1)
+                                <b class="text-success">ACTIVO</b>
+                                @else
+                                <b class="text-danger">INACTIVO</b>
+                                @endif
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-
-            <!-- Modal footer -->
-            {{-- <div class="modal-footer botones">
-                <div>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div> --}}
-
         </div>
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $(".verUsuario").attr('disabled', false);
     });
-
 </script>

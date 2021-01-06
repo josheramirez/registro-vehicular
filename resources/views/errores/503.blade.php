@@ -21,7 +21,7 @@
                         </div>
 
                         <div class="col-md-9 text-center" >
-                            <h4 style="margin-top:5%">Usted no posee los permisos necesarios para acceder a este modulo!</h4>
+                            <h4 style="margin-top:5%">Usted no posee los permisos necesarios para acceder a este módulo!</h4>
                         </div>
                     </div>
 

@@ -30,7 +30,8 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>E-mail</th>
-                                        <th>Activo</th>
+                                        <!-- <th>Activo</th> -->
+                                        <th>Tipo de usuario</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -39,11 +40,12 @@
                                     <tr>
                                         <td>{{$usuario->name}}</td>
                                         <td>{{$usuario->email}}</td>
-                                        @if($usuario->activo==1)
+                                        <!-- @if($usuario->activo==1)
                                         <td>SI</td>
                                         @else
                                         <td>NO</td>
-                                        @endif
+                                        @endif -->
+                                        <td>{{$usuario->tipo_usuario_desc}}</td>
                                         <td style="text-align:center">
                                             <button type="button" class="btn btn-primary btn-sm verUsuario" name="{{$usuario->id}}" title="Información del usuario" onclick="verUsuario(this.name)"><i class="fas fa-info-circle"></i></button>
                                             <button type="button" class="btn btn-success btn-sm verHistorial" name="{{$usuario->id}}" title="Historial de cambios del usuario" onclick="verHistorial(this.name)"><i class="fa fa-history"></i></button>

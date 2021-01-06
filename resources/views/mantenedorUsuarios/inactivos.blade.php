@@ -18,7 +18,7 @@
                 <div class="card-body">
 
                     <div class="row">
-                       
+
                     </div>
 
                     <div class="row">
@@ -28,7 +28,8 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>E-mail</th>
-                                        <th>Activo</th>
+                                        <!-- <th>Activo</th> -->
+                                        <th>Tipo de usuario</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -37,14 +38,15 @@
                                     <tr>
                                         <td>{{$inactivo->name}}</td>
                                         <td>{{$inactivo->email}}</td>
-                                        @if($inactivo->activo==1)
+                                        <!-- @if($inactivo->activo==1)
                                         <td>SI</td>
                                         @else
                                         <td>NO</td>
-                                        @endif
+                                        @endif -->
+                                        <td>{{$inactivo->tipo_usuario_desc}}</td>
                                         <td style="text-align:center">
+                                            <button type="button" class="btn btn-primary btn-sm verUsuario" name="{{$inactivo->id}}" title="Información del usuario" onclick="verUsuario(this.name)"><i class="fas fa-info-circle"></i></button>
                                             <button type="button" class="btn btn-success btn-sm revertirUsuario" name="{{$inactivo->id}}" title="Revertir/Reactivar usuario" onclick="revertirUsuario(this.name)"><i class="fa fa-history"></i></button>
-
                                         </td>
                                     </tr>
                                     @endforeach
@@ -83,7 +85,16 @@
         });
     });
 
-
+    function verUsuario(id) {
+        $(".verUsuario").attr('disabled', true);
+        ruta = @json(route('mantenedorusuarios.verusuario', ['id' => 'id_prof']));
+        ruta = ruta.replace('id_prof', id);
+        $('.modal').modal('hide');
+        $.get(ruta, function(data) {
+            $('#modal').html(data);
+            $('#modalVerUsuario').modal('show');
+        });
+    };
 
     function revertirUsuario(id) {
         $(".revertirUsuario").attr('disabled', true);

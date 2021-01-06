@@ -97,12 +97,9 @@
                             <b style="font-size: 12px; color:gray;">* La fila resaltada en color VERDE corresponde al usuario actualmente activo en el sistema.</b></label>
                         </div>
 
-
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
