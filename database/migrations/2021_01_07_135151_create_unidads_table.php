@@ -18,6 +18,7 @@ class CreateUnidadsTable extends Migration
             $table->string('nombre',80);
             $table->string('observacion',100);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

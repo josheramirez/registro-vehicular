@@ -42,4 +42,6 @@ route::group(['middleware' => 'auth'], function () {
     Route::post('/mantenedor_usuarios/eliminar', 'MantenedorUsuariosController@eliminar')->name('mantenedorusuarios.eliminar');
 
     Route::get('/mantenedor_usuarios/ver_historial/{id}', 'MantenedorUsuariosController@verHistorial')->name('mantenedorusuarios.verhistorial');
+
+    Route::resource('mantenedor_insituciones', 'MantenedorInstitucionesController');
 });

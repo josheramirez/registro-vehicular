@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CambioUsuario extends Model
 {
+    use SoftDeletes;
     protected $table = 'cambios_usuarios';
 
     //OBTIENE LOS USUARIOS PARTICIPANTES EN EL CAMBIO

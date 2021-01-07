@@ -12,19 +12,28 @@ class InstitucionesSeeder extends Seeder
     public function run()
     {
         DB::table('instituciones')->insert([
-            'nombre' => 'SSMOC' 
+            'nombre' => 'ONU',
+            'observacion' => 'Organización Nacione Unidas'
         ]);
 
         DB::table('instituciones')->insert([
-            'nombre' => 'SSMS'
+            'nombre' => 'SSMOC',
+            'observacion' => 'Servicio Salud Metropolitano Occidente'
         ]);
 
         DB::table('instituciones')->insert([
-            'nombre' => 'SSMN'
+            'nombre' => 'SSMS',
+            'observacion' => 'Servicio Salud Metropolitano Sur'
         ]);
 
         DB::table('instituciones')->insert([
-            'nombre' => 'SSME'
+            'nombre' => 'SSMN',
+            'observacion' => 'Servicio Salud Metropolitano Norte'
+        ]);
+
+        DB::table('instituciones')->insert([
+            'nombre' => 'SSME',
+            'observacion' => 'Servicio Salud Metropolitano Este'
         ]);
     }
 }
