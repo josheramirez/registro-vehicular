@@ -18,6 +18,7 @@ class CreateTableTiposUsuarios extends Migration
             $table->string('nombre',50);
             $table->tinyInteger('activo')->default(1);
             $table->timestamps();
+            $table->softDeletes();
             
         });
     }

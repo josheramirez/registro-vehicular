@@ -41,6 +41,7 @@
                                         <th>Teléfono</th>
                                         <th>Tipo de usuario</th>
                                         <th>Departamentos</th>
+                                        <th>Acción</th>
                                         <th>Modificador</th>
                                         <th>Fecha modificación</th>
                                     </tr>
@@ -73,7 +74,7 @@
                                                 @endforeach
                                             </ul>
                                         </td>
-
+                                        <td>{{$his['accion']}}</td>
                                         @if($his['modificador'])
                                         <td>{{$his['modificador']['name']}}</td>
                                         @else

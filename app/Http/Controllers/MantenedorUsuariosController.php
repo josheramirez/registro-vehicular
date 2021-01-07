@@ -113,10 +113,26 @@ class MantenedorUsuariosController extends Controller
     public function verHistorial($id)
     {
         $usuario = User::find($id);
+        
 
         //SE BUSCA TODOS LOS CAMBIOS QUE HA SUFRIDO EL USUARIO, SE USA COMO REFERENCIA EL CODIGO, EL CUAL ES UNICO Y NO MODIFICABLE
         $historial = User::where('codigo', $usuario->codigo)->select('id', 'codigo', 'name', 'email', 'email_old', 'telefono', 'activo', 'tipo_usuario')->get();
 
+        // $codigos = $historial->pluck('id')->toArray();
+
+        // $cambios = CambioUsuario::whereIn('usuario_antiguo',$codigos)->get();
+
+        // foreach($cambios as $key => $ca){
+        //     $cambios[$key]['usuarios'] = $ca->obtenerUsuarios();
+        //     $cambios[$key]['fecha_cambio'] = utilidades::fechaVistas($ca->created_at);
+        //     $cambios[$key]['actual'] =  $cambios[$key]['usuarios'][1];
+        //     $cambios[$key]['antiguo'] =  $cambios[$key]['usuarios'][0];
+
+        //     $cambios[$key]['actual_departamentos'] =  $cambios[$key]['actual']->obtenerDepartamentos();
+        //     $cambios[$key]['antiguo_departamentos'] =  $cambios[$key]['antiguo']->obtenerDepartamentos();
+        // }
+        // dd($cambios);
+        
         //SE ITERA PARA CADA CAMBIO REALIZADO
         foreach ($historial as $key => $his) {
 
@@ -130,11 +146,13 @@ class MantenedorUsuariosController extends Controller
                 $cambio = $his->obtenerCambio();
                 $historial[$key]['modificador'] = $cambio->obtenerModificador();
                 $historial[$key]['fecha_cambio'] = utilidades::fechaVistas($cambio->created_at);
+                $historial[$key]['accion'] = $cambio->observacion;
             } else {
 
                 //EN CASO DE QUE NO POSEA CAMBIOS, ASIGNA ESTA INFORMACION COMO NULA
                 $historial[$key]['modificador'] = null;
                 $historial[$key]['fecha_cambio'] = null;
+                $historial[$key]['accion'] = null;
             }
 
             //OBTIENE EL TIPO DE USUARIO ASIGNADO EN EL CAMBIO
@@ -200,6 +218,7 @@ class MantenedorUsuariosController extends Controller
         $cambio_usuario->usuario_antiguo = $usuario->id;
         $cambio_usuario->usuario_actual = $usuario_nuevo->id;
         $cambio_usuario->usuario_modificador = $logeado->id;
+        $cambio_usuario->observacion = 'ACTUALIZADO';
         $cambio_usuario->save();
 
         //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
@@ -229,7 +248,17 @@ class MantenedorUsuariosController extends Controller
         $datos = $request->all();
         $usuario = User::find($datos['usuario_id']);
         $usuario->activo = 0;
+        $usuario->email_old = $usuario->email;
+        $usuario->email = NULL;
         $usuario->save();
+
+        $cambio_usuario = new CambioUsuario();
+        $cambio_usuario->usuario_antiguo = $usuario->id;
+        $cambio_usuario->usuario_actual = $usuario->id;
+        $cambio_usuario->usuario_modificador = Auth::user()->id;
+        $cambio_usuario->observacion = 'ELIMINADO';
+        $cambio_usuario->save();
+
         return 'usuario_eliminado';
     }
 
@@ -270,8 +299,32 @@ class MantenedorUsuariosController extends Controller
     public function revertir($id)
     {
         $usuario = User::find($id);
-        $usuario->activo = 1;
-        $usuario->save();
+
+        $usuario_nuevo = $usuario->replicate();
+        $usuario_nuevo->email = $usuario_nuevo->email_old;
+        $usuario_nuevo->email_old = NULL;
+        $usuario_nuevo->activo = 1;
+        $usuario_nuevo->save();
+
+        $cambio_usuario = new CambioUsuario();
+        $cambio_usuario->usuario_antiguo = $usuario->id;
+        $cambio_usuario->usuario_actual = $usuario_nuevo->id;
+        $cambio_usuario->usuario_modificador = Auth::user()->id;
+        $cambio_usuario->observacion = 'RECUPERADO';
+        $cambio_usuario->save();
+
+        //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
+        $departamentos_antiguos = DepartamentoUsuario::where('usuario_id', $id)->get();
+
+        //ASIGNA LOS DEPARTAMENTOS PARA LE NUEVO USUARIO
+        foreach ($departamentos_antiguos as $da) {
+            $dn = $da->replicate();
+            $dn->usuario_id = $usuario_nuevo->id;
+            $dn->creador_id = Auth::user()->id;
+            $dn->save();
+            $da->delete();
+        }
+
         return 'usuario_recuperado';
     }
 

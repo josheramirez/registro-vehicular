@@ -18,7 +18,9 @@ class CreateCambiosUsuariosTable extends Migration
             $table->unsignedBigInteger('usuario_antiguo');
             $table->unsignedBigInteger('usuario_actual');
             $table->unsignedBigInteger('usuario_modificador');
+            $table->string('observacion',50)->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('usuario_antiguo')->references('id')->on('users');
             $table->foreign('usuario_actual')->references('id')->on('users');

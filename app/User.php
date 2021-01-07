@@ -53,7 +53,7 @@ class User extends Authenticatable
     //FUNCION QUE OBTIENE LA INFORMACION DEL CAMBIO CORRESPONDIENTE AL USUARIO
     public function obtenerCambio()
     {
-        $cambio = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at')->first();
+        $cambio = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at','observacion')->first();
         return $cambio;
     }
 
