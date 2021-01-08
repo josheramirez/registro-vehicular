@@ -13,7 +13,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Instituciones del sistema</div>
+                <div class="card-header">Sub Direcciones del sistema</div>
 
                 <div class="card-body">
 
@@ -25,7 +25,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="tabla_instituciones" class="display compact text-center">
+                            <table id="tabla_sub_direcciones" class="display compact text-center">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -35,13 +35,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($instituciones as $institucion)
+                                    @foreach($sub_direcciones as $sub_direccion)
                                     <tr>
-                                        <td>{{$institucion->nombre}}</td>
-                                        <td>{{$institucion->observacion}}</td>
+                                        <td>{{$sub_direccion->nombre}}</td>
+                                        <td>{{$sub_direccion->observacion}}</td>
                                         <td style="text-align:center">
-                                            <button type="button" class="btn btn-primary btn-sm verInstitucion" name="{{$institucion->id}}" title="Información del usuario" onclick="verInstitucion(this.name)"><i class="fas fa-info-circle"></i></button>
-                                            <button type="button" class="btn btn-warning btn-sm verEditar" name="{{$institucion->id}}" title="Edición de usuario" onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btn btn-primary btn-sm verInstitucion" name="{{$sub_direccion->id}}" title="Información del usuario" onclick="verInstitucion(this.name)"><i class="fas fa-info-circle"></i></button>
+                                            <button type="button" class="btn btn-warning btn-sm verEditar" name="{{$sub_direccion->id}}" title="Edición de usuario" onclick="verEditar(this.name)"><i class="fas fa-edit"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -61,7 +61,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#tabla_instituciones').DataTable({
+        $('#tabla_sub_direcciones').DataTable({
             language: {
                 "lengthMenu": "Mostrar _MENU_ registros por página",
                 "zeroRecords": "No se encontraron registros",
@@ -82,7 +82,7 @@
 
     function verAgregar(id) {
         $(".verAgregar").attr('disabled', true);
-        ruta = @json(route('mantenedor_instituciones.create', ['mantenedor_institucione' => 'id_prof']));
+        ruta = @json(route('mantenedor_sub_direcciones.create', ['mantenedor_sub_direccione' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
         $.get(ruta, function(data) {
@@ -93,18 +93,18 @@
 
     function verInstitucion(id) {
         $(".verInstitucion").attr('disabled', true);
-        ruta = @json(route('mantenedor_instituciones.show', ['mantenedor_institucione' => 'id_prof']));
+        ruta = @json(route('mantenedor_sub_direcciones.show', ['mantenedor_sub_direccione' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
         $.get(ruta, function(data) {
             $('#modal').html(data);
-            $('#modalVerInstitucion').modal('show');
+            $('#modalVerSubDireccion').modal('show');
         });
     };
 
     function verEditar(id) {
         $(".verEditar").attr('disabled', true);
-        ruta = @json(route('mantenedor_instituciones.edit', ['mantenedor_institucione' => 'id_prof']));
+        ruta = @json(route('mantenedor_sub_direcciones.edit', ['mantenedor_sub_direccione' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
         $.get(ruta, function(data) {
@@ -115,7 +115,7 @@
 
     function verEliminar(id) {
         $(".verEliminar").attr('disabled', true);
-        ruta = @json(route('mantenedor_instituciones.show', ['mantenedor_institucione' => 'id_prof']));
+        ruta = @json(route('mantenedor_sub_direcciones.show', ['mantenedor_sub_direccione' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         $('.modal').modal('hide');
         $.get(ruta, function(data) {

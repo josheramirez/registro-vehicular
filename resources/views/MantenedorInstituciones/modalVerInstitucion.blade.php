@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="col-md-12 mt-2 mb-3 text-center">
-                        <form action="{{route('mantenedor_insituciones.destroy', ['mantenedor_insitucione' => $institucion->id])}}" method="DELETE" id="formulario_eliminar_institucion">
+                        <form action="{{route('mantenedor_instituciones.destroy', ['mantenedor_institucione' => $institucion->id])}}" method="DELETE" id="formulario_eliminar_institucion">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm verEliminar" name="{{$institucion->id}}" title="Eliminarción de institución" onclick="confirmacionEliminacion(this.name)"><i class="fas fa-trash-alt"></i>Eliminar</button>
                         </form>
@@ -119,7 +119,7 @@
     });
 
     function confirmacionEliminacion(id) {
-        ruta = @json(route('mantenedor_insituciones.destroy', ['mantenedor_insitucione' => 'id_prof']));
+        ruta = @json(route('mantenedor_instituciones.destroy', ['mantenedor_institucione' => 'id_prof']));
         ruta = ruta.replace('id_prof', id);
         console.log(ruta);
         Swal.fire({

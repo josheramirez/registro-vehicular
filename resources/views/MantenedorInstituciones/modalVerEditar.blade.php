@@ -29,7 +29,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedor_insituciones.update', ['mantenedor_insitucione' => $institucion->id])}}" method="PUT"
+                        <form action="{{route('mantenedor_instituciones.update', ['mantenedor_institucione' => $institucion->id])}}" method="PUT"
                             id="formulario_editar_institucion">
                             @csrf
                             <div class="row">

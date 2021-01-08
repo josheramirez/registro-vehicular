@@ -43,5 +43,8 @@ route::group(['middleware' => 'auth'], function () {
 
     Route::get('/mantenedor_usuarios/ver_historial/{id}', 'MantenedorUsuariosController@verHistorial')->name('mantenedorusuarios.verhistorial');
 
-    Route::resource('mantenedor_insituciones', 'MantenedorInstitucionesController');
+    Route::resource('mantenedor_instituciones', 'MantenedorInstitucionesController');
+
+    Route::resource('mantenedor_direcciones', 'MantenedorDireccionesController');
+    Route::resource('mantenedor_sub_direcciones', 'MantenedorSubDireccionesController');
 });

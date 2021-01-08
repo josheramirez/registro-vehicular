@@ -61,7 +61,9 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown01">
                         <a class="dropdown-item" href="{{route('mantenedorusuarios.index')}}">Usuarios</a>
                         <a class="dropdown-item" href="{{route('mantenedorusuarios.inactivos')}}">Usuarios inactivos</a>
-                        <a class="dropdown-item" href="{{route('mantenedor_insituciones.index')}}">Instituciones</a>
+                        <a class="dropdown-item" href="{{route('mantenedor_instituciones.index')}}">Instituciones</a>
+                        <a class="dropdown-item" href="{{route('mantenedor_direcciones.index')}}">Direcciones</a>
+                        <a class="dropdown-item" href="{{route('mantenedor_sub_direcciones.index')}}">Sub Direcciones</a>
                     </div>
                 </li>
                

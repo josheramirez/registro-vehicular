@@ -22,14 +22,14 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5>Formulario creación de Instituciones</h5>
+                <h5>Formulario creación de Sub Direcciones</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedor_instituciones.store')}}" method="POST" id="formulario_agregar_institucion">
+                        <form action="{{route('mantenedor_sub_direcciones.store')}}" method="POST" id="formulario_agregar_direccion">
                             @csrf
 
                             <div class="row">
@@ -59,13 +59,6 @@
                 </div>
             </div>
 
-            <!-- Modal footer -->
-            {{-- <div class="modal-footer botones">
-                <div>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div> --}}
-
         </div>
     </div>
 </div>
@@ -75,7 +68,7 @@
         $(".verAgregar").attr('disabled', false);
     });
 
-    $("#formulario_agregar_institucion").submit(function(e) {
+    $("#formulario_agregar_direccion").submit(function(e) {
         var lista = document.getElementsByClassName("spanclass");
         limpiarErrores(lista);
         e.preventDefault();
@@ -86,11 +79,11 @@
             url: url,
             data: form.serialize(), // serializa los elementos input del form
             success: function(data) {
-                if (data == 'institucion_guardada') {
+                if (data == 'sub_direccion_guardada') {
                     let timerInterval
                     Swal.fire({
                         icon: 'success',
-                        title: 'Institución creada exitosamente',
+                        title: 'Sub Dirección creada exitosamente',
                         html: 'Cerrando ventana en <b>5</b> segundos.',
                         timer: 5000,
                         timerProgressBar: false,
