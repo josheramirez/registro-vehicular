@@ -53,6 +53,12 @@ class User extends Authenticatable
         return $string;
     }
 
+    public function obtenerDepartamentosId()
+    {
+        $departamentos = $this->hasMany('App\DepartamentoUsuario', 'usuario_id', 'id')->withTrashed()->pluck('departamento_id')->toArray();
+        return implode(",", $departamentos);
+    }
+
     //FUNCION QUE OBTIENE LA INFORMACION DEL CAMBIO CORRESPONDIENTE AL USUARIO
     public function obtenerCambio()
     {

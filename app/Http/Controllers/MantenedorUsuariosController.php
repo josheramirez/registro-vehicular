@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\TipoUsuario;
 use App\Helpers\utilidades;
+use App\Rules\RutValido;
 
 class MantenedorUsuariosController extends Controller
 {
@@ -25,7 +26,7 @@ class MantenedorUsuariosController extends Controller
     {
         //SE OBTIENE LA LISTA DE USUARIOS ACTIVOS DEL SISTEMA, NO SE MUESTRA EL PROPIO USUARIO NI USUARIOS CON PERMISOS MAYOR AL USUARIO LOGEADO
         $logeado = Auth::user();
-        $usuarios = User::select('users.id','users.name','users.email','users.email_old','users.telefono','users.activo','users.tipo_usuario','tipos_usuario.nombre as tipo_usuario_desc')
+        $usuarios = User::select('users.id', 'users.name', 'users.email', 'users.email_old', 'users.telefono', 'users.activo', 'users.tipo_usuario', 'tipos_usuario.nombre as tipo_usuario_desc')
             ->where('users.activo', 1)
             ->where('users.id', '!=', $logeado->id)
             ->where('users.tipo_usuario', '>=', $logeado->tipo_usuario)
@@ -44,8 +45,14 @@ class MantenedorUsuariosController extends Controller
 
     public function agregar(Request $request)
     {
+        $rut = '/^([0-9]+)$/';
+
+        //ASIGNA LOS DATOS DEL REQUEST A UNA NUEVA VARIABLE
+        $data = $request->all();
+
         $validatedData = $request->validate(
             [
+                'rut' => ['required', 'max:11', new RutValido($data['rut'], $data['dv'])],
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
                 'departamentos' => ['required'],
@@ -54,7 +61,7 @@ class MantenedorUsuariosController extends Controller
             ],
             [
                 'required' => 'Este campo es obligatorio!',
-                'digits_between' => 'Este campo debe tener entre :min y :max digitos!'
+                'digits_between' => 'Este campo debe tener entre :min y :max digitos!',
             ]
         );
 
@@ -72,11 +79,12 @@ class MantenedorUsuariosController extends Controller
         //OBTIENE EL USUARIO LOGEADO
         $logeado = Auth::user();
 
-        //ASIGNA LOS DATOS DEL REQUEST A UNA NUEVA VARIABLE
-        $data = $request->all();
+
 
         //SE PROCEDE A LA CREACION DE USUARIO
         $usuario = new User();
+        $usuario->rut = $data['rut'];
+        $usuario->dv = $data['dv'];
         $usuario->codigo = $nuevo_codigo;
         $usuario->name = $data['name'];
         $usuario->email = $data['email'];
@@ -113,16 +121,16 @@ class MantenedorUsuariosController extends Controller
     public function verHistorial($id)
     {
         $usuario = User::find($id);
-        
+
 
         //SE BUSCA TODOS LOS CAMBIOS QUE HA SUFRIDO EL USUARIO, SE USA COMO REFERENCIA EL CODIGO, EL CUAL ES UNICO Y NO MODIFICABLE
         $historial = User::where('codigo', $usuario->codigo)->select('id', 'codigo', 'name', 'email', 'email_old', 'telefono', 'activo', 'tipo_usuario')->get();
 
         $codigos = $historial->pluck('id')->toArray();
 
-        $cambios = CambioUsuario::whereIn('usuario_antiguo',$codigos)->get();
+        $cambios = CambioUsuario::whereIn('usuario_antiguo', $codigos)->get();
 
-        foreach($cambios as $key => $ca){
+        foreach ($cambios as $key => $ca) {
             $cambios[$key]['usuarios'] = $ca->obtenerUsuarios();
             $cambios[$key]['fecha_cambio'] = utilidades::fechaVistas($ca->created_at);
             $cambios[$key]['actual'] =  $cambios[$key]['usuarios'][1];
@@ -132,7 +140,7 @@ class MantenedorUsuariosController extends Controller
             $cambios[$key]['antiguo_departamentos'] =  $cambios[$key]['antiguo']->obtenerDepartamentos();
         }
         //dd($cambios);
-        
+
         //SE ITERA PARA CADA CAMBIO REALIZADO
         // foreach ($historial as $key => $his) {
 
@@ -178,6 +186,7 @@ class MantenedorUsuariosController extends Controller
         $data = $request->all();
         $validatedData = $request->validate(
             [
+                'rut' => ['required', 'max:11', new RutValido($data['rut'], $data['dv'])],
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,NULL,id,deleted_at,NUL'],
@@ -193,45 +202,62 @@ class MantenedorUsuariosController extends Controller
         //OBTIENE EL USUARIO A EDITAR (ANTIGUO)
         $usuario = User::find($data['usuario_id']);
         //COPIO AL USUARIO ANTIGUO Y CREA AL NUEVO
-        $usuario_nuevo = $usuario->replicate();
-        //OBTIENE EL EMAIL DEL USUARIO, YA QUE EL CAMPO EMAIL ES UNICO
-        $email = $usuario->email;
-        //ASIGNO EL EMAIL A UNA COLUMNA NO UNICA
-        $usuario->email_old =  $email;
-        //DEJA NULO EL CAMPO EMAIL Y DESACTIVA AL USUARIO
-        $usuario->email = NULL;
-        $usuario->activo = 0;
-        $usuario->save();
+        
 
-        //CONSTRUYE AL USUARIO NUEVO
-        $usuario_nuevo->name = $data['name'];
-        $usuario_nuevo->email = $data['email'];
-        $usuario_nuevo->telefono = $data['telefono'];
-        $usuario_nuevo->email =  $email;
-        $usuario_nuevo->email_old = NULL;
-        $usuario_nuevo->tipo_usuario = $data['tipo_usuario'];
-        $usuario_nuevo->activo = 1;
-        $usuario_nuevo->save();
+        $usuario->rut = $data['rut'];
+        $usuario->dv = $data['dv'];
+        $usuario->name = $data['name'];
+        $usuario->email = $data['email'];
+        $usuario->telefono = $data['telefono'];
+        $usuario->tipo_usuario = $data['tipo_usuario'];
+        $usuario->activo = 1;
 
-        //SE CREA EL OBJETO QUE GUARDA LA INFORMACION DE LOS CAMBIOS EN BD
-        $cambio_usuario = new CambioUsuario();
-        $cambio_usuario->usuario_antiguo = $usuario->id;
-        $cambio_usuario->usuario_actual = $usuario_nuevo->id;
-        $cambio_usuario->usuario_modificador = $logeado->id;
-        $cambio_usuario->observacion = 'ACTUALIZADO';
-        $cambio_usuario->save();
+        if ($usuario->obtenerDepartamentosId() == implode(',', $data['departamentos']) && count($usuario->getDirty()) == 0) {
+            return 'sin_cambios';
+        } else {
+            $usuario = User::find($data['usuario_id']);
+            $usuario_nuevo = $usuario->replicate();
+            //OBTIENE EL EMAIL DEL USUARIO, YA QUE EL CAMPO EMAIL ES UNICO
+            $email = $usuario->email;
+            //ASIGNO EL EMAIL A UNA COLUMNA NO UNICA
+            $usuario->email_old =  $email;
+            //DEJA NULO EL CAMPO EMAIL Y DESACTIVA AL USUARIO
+            $usuario->email = NULL;
+            $usuario->activo = 0;
+            $usuario->save();
 
-        //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
-        $du = DepartamentoUsuario::where('usuario_id', $data['usuario_id'])->delete();
+            //CONSTRUYE AL USUARIO NUEVO
+            $usuario_nuevo->rut = $data['rut'];
+            $usuario_nuevo->dv = $data['dv'];
+            $usuario_nuevo->name = $data['name'];
+            $usuario_nuevo->email = $data['email'];
+            $usuario_nuevo->telefono = $data['telefono'];
+            $usuario_nuevo->email =  $email;
+            $usuario_nuevo->email_old = NULL;
+            $usuario_nuevo->tipo_usuario = $data['tipo_usuario'];
+            $usuario_nuevo->activo = 1;
+            $usuario_nuevo->save();
 
-        //ASIGNA LOS DEPARTAMENTOS PARA LE NUEVO USUARIO
-        $departamentos = $data['departamentos'];
-        foreach ($departamentos as $dp) {
-            $du = new DepartamentoUsuario();
-            $du->usuario_id = $usuario_nuevo->id;
-            $du->departamento_id = $dp;
-            $du->creador_id = $logeado->id;
-            $du->save();
+            //SE CREA EL OBJETO QUE GUARDA LA INFORMACION DE LOS CAMBIOS EN BD
+            $cambio_usuario = new CambioUsuario();
+            $cambio_usuario->usuario_antiguo = $usuario->id;
+            $cambio_usuario->usuario_actual = $usuario_nuevo->id;
+            $cambio_usuario->usuario_modificador = $logeado->id;
+            $cambio_usuario->observacion = 'ACTUALIZADO';
+            $cambio_usuario->save();
+
+            //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
+            $du = DepartamentoUsuario::where('usuario_id', $data['usuario_id'])->delete();
+
+            //ASIGNA LOS DEPARTAMENTOS PARA LE NUEVO USUARIO
+            $departamentos = $data['departamentos'];
+            foreach ($departamentos as $dp) {
+                $du = new DepartamentoUsuario();
+                $du->usuario_id = $usuario_nuevo->id;
+                $du->departamento_id = $dp;
+                $du->creador_id = $logeado->id;
+                $du->save();
+            }
         }
 
         return 'usuario_actualizado';
@@ -272,7 +298,7 @@ class MantenedorUsuariosController extends Controller
 
         //OBTIENE LOS USUARIOS INACTIVOS DEL SISTEMA, SE TRAEN LOS USUARIOS QUE NO ESTEN ACTIVOS, SEAN INACTIVOS, QUE NO SEA EL USUARIO LOGEADO (OBVIAMENTE) Y QUE TENGAN MENOR JERARQUIA DE PERMISOS.
         $usuarios = User::orderBy('users.id', 'desc')
-            ->select('users.id','users.codigo','users.name','users.email','users.email_old','users.telefono','users.activo','users.tipo_usuario','tipos_usuario.nombre as tipo_usuario_desc')
+            ->select('users.id', 'users.codigo', 'users.name', 'users.email', 'users.email_old', 'users.telefono', 'users.activo', 'users.tipo_usuario', 'tipos_usuario.nombre as tipo_usuario_desc')
             ->whereNotIn('codigo', $usuarios_activos)
             ->where('users.activo', 0)
             ->where('users.id', '!=', $logeado->id)
@@ -327,5 +353,4 @@ class MantenedorUsuariosController extends Controller
 
         return 'usuario_recuperado';
     }
-
 }

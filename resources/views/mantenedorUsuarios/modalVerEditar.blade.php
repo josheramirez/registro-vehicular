@@ -11,13 +11,11 @@
     input:read-only {
         background-color: white;
     }
-
 </style>
 
 
 
-<div id="modalVerEditar" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalVerEditar" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -29,31 +27,40 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedorusuarios.editar')}}" method="POST"
-                            id="formulario_editar_usuario">
+                        <form action="{{route('mantenedorusuarios.editar')}}" method="POST" id="formulario_editar_usuario">
                             @csrf
                             <input type="hidden" name="usuario_id" id="usuario_id" value="{{$usuario->id}}">
                             <div class="row">
 
                                 <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <label for="rut">RUT </label>
+                                            <input type="text" class="form-control" name="rut" id="rut" value="{{$usuario->rut}}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="dv">DV </label>
+                                            <input type="text" class="form-control" name="dv" id="dv" value="{{$usuario->dv}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
                                     <label for="name">Nombre </label>
-                                    <input type="text" class="form-control" name="name" id="name"
-                                        value="{{$usuario->name}}">
+                                    <input type="text" class="form-control" name="name" id="name" value="{{$usuario->name}}">
                                 </div>
 
                                 <div class="col-md-12 mt-4">
                                     <label for="email">E-mail </label>
-                                    <input type="text" class="form-control" name="email" id="email"
-                                        value="{{$usuario->email}}">
+                                    <input type="text" class="form-control" name="email" id="email" value="{{$usuario->email}}">
                                 </div>
 
                                 <div class="col-md-12 mt-4">
                                     <label for="telefono">Teléfono </label>
-                                    <input type="text" class="form-control" name="telefono" id="telefono"
-                                        value="{{$usuario->telefono}}">
+                                    <input type="text" class="form-control" name="telefono" id="telefono" value="{{$usuario->telefono}}">
                                 </div>
 
-                                
+
                                 <div class="col-md-12 mt-4">
                                     <label for="tipo_usuario">Tipo de usuario </label>
                                 </div>
@@ -104,7 +111,7 @@
 </div>
 <script type="text/javascript" src="{!! asset('/js/utilidades.js') !!}"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $(".verEditar").attr('disabled', false);
         $('#departamentos').selectpicker({
             'noneSelectedText': 'Seleccione Departamento',
@@ -112,7 +119,7 @@
         });
     });
 
-    $("#formulario_editar_usuario").submit(function (e) {
+    $("#formulario_editar_usuario").submit(function(e) {
         var lista = document.getElementsByClassName("spanclass");
         limpiarErrores(lista);
         e.preventDefault();
@@ -122,7 +129,7 @@
             type: "POST",
             url: url,
             data: form.serialize(), // serializa los elementos input del form
-            success: function (data) {
+            success: function(data) {
                 if (data == 'usuario_actualizado') {
                     let timerInterval
                     Swal.fire({
@@ -156,13 +163,48 @@
                         }
                     });
                 }
+
+                if (data == 'sin_cambios') {
+                    let timerInterval
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No hay cambios para guardar!',
+                        html: 'Cerrando ventana en <b>5</b> segundos.',
+                        timer: 5000,
+                        timerProgressBar: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                            timerInterval = setInterval(() => {
+                                const content = Swal.getContent();
+                                if (content) {
+                                    const b = content.querySelector('b');
+                                    if (b) {
+
+                                        b.textContent = Math.round(Swal
+                                            .getTimerLeft() / 1000);
+                                    }
+                                }
+                            }, 1000);
+                        },
+                        onClose: () => {
+                            clearInterval(timerInterval);
+                            location.reload();
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('I was closed by the timer')
+                        }
+                    });
+                }
+
+                
             },
-            error: function (error) {
+            error: function(error) {
 
                 spanErrores(error);
             }
 
         });
     });
-
 </script>

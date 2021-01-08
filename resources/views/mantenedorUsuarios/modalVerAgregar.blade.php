@@ -35,6 +35,19 @@
                             <div class="row">
 
                                 <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <label for="rut">RUT </label>
+                                            <input type="text" class="form-control" name="rut" id="rut" value="">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="dv">DV </label>
+                                            <input type="text" class="form-control" name="dv" id="dv" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
                                     <label for="name">Nombre </label>
                                     <input type="text" class="form-control" name="name" id="name" value="" onchange="mostrarPassword(this.value)">
                                 </div>
@@ -61,7 +74,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12 mt-1">
-                                    <span id="tipos_usuario_span" style="color: red"></span>
+                                    <span id="tipo_usuario_span" style="color: red"></span>
                                 </div>
 
                                 <div class="col-md-12 mt-4">

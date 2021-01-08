@@ -47,6 +47,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if(count($historial) == 0)
+                                        <td colspan="8">EL USUARIO NO RESGRISTRA CAMBIOS DE NINGÚN TIPO</td>
+                                    @else
                                     @php $inicial = $historial[0]['usuarios'][0]; @endphp
                                     <tr>
                                         <td>{{$inicial['name']}}</td>
@@ -87,7 +90,7 @@
 
                                         <td>{{$his['usuarios'][1]->obtenerTipoUsuario()->nombre}}</td>
 
-                                        <td>{{$inicial->obtenerDepartamentos()}}</td>
+                                        <td>{{$his['usuarios'][1]->obtenerDepartamentos()}}</td>
 
                                         <td>{{$his['observacion']}}</td>
 
@@ -103,6 +106,8 @@
 
                                     </tr>
                                     @endforeach
+                                    @endif
+                                   
                                 </tbody>
                             </table>
                         </div>
