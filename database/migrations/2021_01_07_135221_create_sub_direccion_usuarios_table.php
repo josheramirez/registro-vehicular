@@ -17,11 +17,13 @@ class CreateSubDireccionUsuariosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('sub_direccion_id');
+            $table->unsignedBigInteger('creador_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('usuario_id')->references('id')->on('users');
             $table->foreign('sub_direccion_id')->references('id')->on('sub_direcciones');
+            $table->foreign('creador_id')->references('id')->on('users');
         });
     }
 

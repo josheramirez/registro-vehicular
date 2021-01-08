@@ -16,12 +16,14 @@ class CreateUnidadUsuariosTable extends Migration
         Schema::create('unidades_usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
-            $table->unsignedBigInteger('unidades_id');
+            $table->unsignedBigInteger('unidad_id');
+            $table->unsignedBigInteger('creador_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('usuario_id')->references('id')->on('users');
-            $table->foreign('unidades_id')->references('id')->on('unidades');
+            $table->foreign('unidad_id')->references('id')->on('unidades');
+            $table->foreign('creador_id')->references('id')->on('users');
         });
     }
 

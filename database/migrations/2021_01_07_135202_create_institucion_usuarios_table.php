@@ -16,12 +16,14 @@ class CreateInstitucionUsuariosTable extends Migration
         Schema::create('instituciones_usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
-            $table->unsignedBigInteger('insitucion_id');
+            $table->unsignedBigInteger('institucion_id');
+            $table->unsignedBigInteger('creador_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('usuario_id')->references('id')->on('users');
-            $table->foreign('insitucion_id')->references('id')->on('instituciones');
+            $table->foreign('institucion_id')->references('id')->on('instituciones');
+            $table->foreign('creador_id')->references('id')->on('users');
         });
     }
 

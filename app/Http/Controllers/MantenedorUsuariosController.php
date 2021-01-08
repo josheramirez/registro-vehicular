@@ -3,14 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Departamento;
-use App\DepartamentoUsuario;
-use App\CambioUsuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
+use App\User;
+
+use App\Institucion;
+use App\InstitucionUsuario;
+
+use App\Direccion;
+use App\DireccionUsuario;
+
+use App\SubDireccion;
+use App\SubDireccionUsuario;
+
+use App\Unidad;
+use App\UnidadUsuario;
+
+use App\Departamento;
+use App\DepartamentoUsuario;
+
+use App\CambioUsuario;
 use App\TipoUsuario;
 use App\Helpers\utilidades;
 use App\Rules\RutValido;
@@ -39,8 +54,18 @@ class MantenedorUsuariosController extends Controller
     {
         //SE OBTIENEN LOS PARAMETROS DEPARTAMENTOS Y TIPOS DE USUARIO NECESARIOS PARA EL FORMULARIO DE CREACION DE USUARIO Y SE RETORNA A LA VISTA CON ESTOS DATOS COMO PARAMETROS
         $departamentos = Departamento::all();
+        $instituciones = Institucion::all();
+        $direcciones = Direccion::all();
+        $sub_direcciones = SubDireccion::all();
+        $unidades = Unidad::all();
         $tipos_usuario = TipoUsuario::all();
-        return view('mantenedorUsuarios/modalVerAgregar')->with('departamentos', $departamentos)->with('tipos_usuario', $tipos_usuario);
+        return view('mantenedorUsuarios/modalVerAgregar')
+        ->with('departamentos', $departamentos)
+        ->with('instituciones', $instituciones)
+        ->with('direcciones', $direcciones)
+        ->with('sub_direcciones', $sub_direcciones)
+        ->with('unidades', $unidades)
+        ->with('tipos_usuario', $tipos_usuario);
     }
 
     public function agregar(Request $request)
@@ -49,7 +74,6 @@ class MantenedorUsuariosController extends Controller
 
         //ASIGNA LOS DATOS DEL REQUEST A UNA NUEVA VARIABLE
         $data = $request->all();
-
         $validatedData = $request->validate(
             [
                 'rut' => ['required', 'max:11', new RutValido($data['rut'], $data['dv'])],
@@ -97,6 +121,46 @@ class MantenedorUsuariosController extends Controller
         $usuario->password =  Hash::make($nueva_pw);
         $usuario->save();
 
+        if(isset($data['instituciones'])){
+            foreach ($data['instituciones'] as $institucion) {
+                $inst = new InstitucionUsuario();
+                $inst->usuario_id = $usuario->id;
+                $inst->institucion_id = $institucion;
+                $inst->creador_id = $logeado->id;
+                $inst->save();
+            }
+        }
+
+        if(isset($data['direcciones'])){
+            foreach ($data['direcciones'] as $direccion) {
+                $dir = new DireccionUsuario();
+                $dir->usuario_id = $usuario->id;
+                $dir->direccion_id = $direccion;
+                $dir->creador_id = $logeado->id;
+                $dir->save();
+            }
+        }
+
+        if(isset($data['sub_direcciones'])){
+            foreach ($data['sub_direcciones'] as $sub_direccion) {
+                $sub_dir = new SubDireccionUsuario();
+                $sub_dir->usuario_id = $usuario->id;
+                $sub_dir->sub_direccion_id = $sub_direccion;
+                $sub_dir->creador_id = $logeado->id;
+                $sub_dir->save();
+            }
+        }
+
+        if(isset($data['unidades'])){
+            foreach ($data['unidades'] as $unidad) {
+                $uni = new UnidadUsuario();
+                $uni->usuario_id = $usuario->id;
+                $uni->unidad_id = $unidad;
+                $uni->creador_id = $logeado->id;
+                $uni->save();
+            }
+        }
+
         //SE PROCEDE A LA ASIGNACION DE DEPARTAMENTOS, DONDE SE GUARDA EL USUARIO, EL O LOS DEPARTAMENTOS A LOS CUALES PERTENECE EL USUARIO Y EL USUARIO CREADOR.
         $departamentos = $data['departamentos'];
         foreach ($departamentos as $dp) {
@@ -106,7 +170,7 @@ class MantenedorUsuariosController extends Controller
             $du->creador_id = $logeado->id;
             $du->save();
         }
-
+        dd('usuario_creado');
         return 'usuario_creado';
     }
 
@@ -139,33 +203,7 @@ class MantenedorUsuariosController extends Controller
             $cambios[$key]['actual_departamentos'] =  $cambios[$key]['actual']->obtenerDepartamentos();
             $cambios[$key]['antiguo_departamentos'] =  $cambios[$key]['antiguo']->obtenerDepartamentos();
         }
-        //dd($cambios);
 
-        //SE ITERA PARA CADA CAMBIO REALIZADO
-        // foreach ($historial as $key => $his) {
-
-        //     //SE OBTIENEN LOS DEPARTAMENTOS A LOS CUALES PERTENECE EL USUARIO EN CADA CAMBIO
-        //     $historial[$key]['departamentos'] = $his->obtenerDepartamentos();
-
-        //     //EN ESTE CASO SE EVALUA SI ES QUE EL USUARIO POSEE CAMBIOS.
-        //     if ($his->obtenerCambio()) {
-
-        //         //EN CASO DE QUE POSEA CAMBIOS, OBTIENE EL CAMBIO CORRESPONDIENTE Y JUNTO CON ESTO TAMBIEN OBTIENE EL USUARIO MODIFICADOR Y LA FECHA DE MODIFICACION
-        //         $cambio = $his->obtenerCambio();
-        //         $historial[$key]['modificador'] = $cambio->obtenerModificador();
-        //         $historial[$key]['fecha_cambio'] = utilidades::fechaVistas($cambio->created_at);
-        //         $historial[$key]['accion'] = $cambio->observacion;
-        //     } else {
-
-        //         //EN CASO DE QUE NO POSEA CAMBIOS, ASIGNA ESTA INFORMACION COMO NULA
-        //         $historial[$key]['modificador'] = null;
-        //         $historial[$key]['fecha_cambio'] = null;
-        //         $historial[$key]['accion'] = null;
-        //     }
-
-        //     //OBTIENE EL TIPO DE USUARIO ASIGNADO EN EL CAMBIO
-        //     $historial[$key]['tipo_usuario'] = $his->obtenerTipoUsuario()->nombre;
-        // }
         return view('mantenedorUsuarios/modalVerHistorial')->with('usuario', $usuario)->with('historial', $cambios);
     }
 
@@ -352,5 +390,9 @@ class MantenedorUsuariosController extends Controller
         }
 
         return 'usuario_recuperado';
+    }
+
+    public static function evaluarCambio($usuario_antiguo,$usuario_actualizado){
+
     }
 }

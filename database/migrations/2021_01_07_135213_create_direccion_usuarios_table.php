@@ -17,11 +17,13 @@ class CreateDireccionUsuariosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('direccion_id');
+            $table->unsignedBigInteger('creador_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('usuario_id')->references('id')->on('users');
             $table->foreign('direccion_id')->references('id')->on('direcciones');
+            $table->foreign('creador_id')->references('id')->on('users');
         });
     }
 

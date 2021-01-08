@@ -18,7 +18,7 @@
 </style>
 
 <div id="modalVerAgregar" class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
@@ -34,30 +34,30 @@
 
                             <div class="row">
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-9">
                                             <label for="rut">RUT </label>
                                             <input type="text" class="form-control" name="rut" id="rut" value="">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-3" style="margin-left: -5%;">
                                             <label for="dv">DV </label>
                                             <input type="text" class="form-control" name="dv" id="dv" value="">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mt-4">
+                                <div class="col-md-6">
                                     <label for="name">Nombre </label>
                                     <input type="text" class="form-control" name="name" id="name" value="" onchange="mostrarPassword(this.value)">
                                 </div>
 
-                                <div class="col-md-12 mt-4">
+                                <div class="col-md-6 mt-4">
                                     <label for="email">E-mail </label>
                                     <input type="text" class="form-control" name="email" id="email" value="">
                                 </div>
 
-                                <div class="col-md-12 mt-4">
+                                <div class="col-md-6 mt-4">
                                     <label for="telefono">Teléfono </label>
                                     <input type="text" class="form-control" name="telefono" id="telefono" value="">
                                 </div>
@@ -77,20 +77,95 @@
                                     <span id="tipo_usuario_span" style="color: red"></span>
                                 </div>
 
-                                <div class="col-md-12 mt-4">
-                                    <label for="departamentos">Departamentos </label>
-                                </div>
-                                <div class="col-md-12" id="div_select_departamento">
-                                    <select name="departamentos[]" id="departamentos" class="form-control" multiple>
-                                        @foreach($departamentos as $dp)
-                                        <option value="{{$dp->id}}">{{$dp->nombre}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-12 mt-1">
-                                    <span id="departamentos_span" style="color: red"></span>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="instituciones">Instituciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="instituciones[]" id="instituciones" class="form-control" multiple>
+                                                @foreach($instituciones as $institucion)
+                                                <option value="{{$institucion->id}}">{{$institucion->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="instituciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="direcciones">Direcciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="direcciones[]" id="direcciones" class="form-control" multiple>
+                                                @foreach($direcciones as $direccion)
+                                                <option value="{{$direccion->id}}">{{$direccion->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="direcciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="departamentos">Departamentos </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="departamentos[]" id="departamentos" class="form-control" multiple>
+                                                @foreach($departamentos as $dp)
+                                                <option value="{{$dp->id}}">{{$dp->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="departamentos_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="unidades">Unidades </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="unidades[]" id="unidades" class="form-control" multiple>
+                                                @foreach($unidades as $unidad)
+                                                <option value="{{$unidad->id}}">{{$unidad->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="unidad_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="sub_direcciones">Sub direcciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="sub_direcciones[]" id="sub_direcciones" class="form-control" multiple>
+                                                @foreach($sub_direcciones as $sub_direccion)
+                                                <option value="{{$sub_direccion->id}}">{{$sub_direccion->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="sub_direcciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="col-md-12 mt-4">
                                     <b id="password_label">Contraseña por defecto : </b>
@@ -129,6 +204,27 @@
             'noneSelectedText': 'Seleccione Departamento',
             'multipleSeparator': ','
         });
+
+        $('#instituciones').selectpicker({
+            'noneSelectedText': 'Seleccione Institucion',
+            'multipleSeparator': ','
+        });
+
+        $('#direcciones').selectpicker({
+            'noneSelectedText': 'Seleccione Direccion',
+            'multipleSeparator': ','
+        });
+
+        $('#unidades').selectpicker({
+            'noneSelectedText': 'Seleccione Unidad',
+            'multipleSeparator': ','
+        });
+
+        $('#sub_direcciones').selectpicker({
+            'noneSelectedText': 'Seleccione sub dirección',
+            'multipleSeparator': ','
+        });
+        
 
         $('#tipo_usuario').selectpicker({
             'noneSelectedText': 'Seleccione Tipo de usuario',
