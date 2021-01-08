@@ -59,6 +59,32 @@ class User extends Authenticatable
         return implode(",", $departamentos);
     }
 
+    public function obtenerInstitucionesId()
+    {
+        $instituciones = $this->hasMany('App\InstitucionUsuario', 'usuario_id', 'id')->withTrashed()->pluck('institucion_id')->toArray();
+        return implode(",", $instituciones);
+    }
+
+    public function obtenerDireccionesId()
+    {
+        $direcciones = $this->hasMany('App\DireccionUsuario', 'usuario_id', 'id')->withTrashed()->pluck('direccion_id')->toArray();
+        return implode(",", $direcciones);
+    }
+
+    public function obtenerSubDireccionesId()
+    {
+        $sub_direcciones = $this->hasMany('App\SubDireccionUsuario', 'usuario_id', 'id')->withTrashed()->pluck('sub_direccion_id')->toArray();
+        return implode(",", $sub_direcciones);
+    }
+
+    public function obtenerUnidadesId()
+    {
+        $unidades = $this->hasMany('App\UnidadUsuario', 'usuario_id', 'id')->withTrashed()->pluck('unidad_id')->toArray();
+        return implode(",", $unidades);
+    }
+
+    
+
     //FUNCION QUE OBTIENE LA INFORMACION DEL CAMBIO CORRESPONDIENTE AL USUARIO
     public function obtenerCambio()
     {

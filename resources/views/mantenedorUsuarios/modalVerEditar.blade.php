@@ -16,7 +16,7 @@
 
 
 <div id="modalVerEditar" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
@@ -32,30 +32,30 @@
                             <input type="hidden" name="usuario_id" id="usuario_id" value="{{$usuario->id}}">
                             <div class="row">
 
-                                <div class="col-md-12">
+                            <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-9">
                                             <label for="rut">RUT </label>
                                             <input type="text" class="form-control" name="rut" id="rut" value="{{$usuario->rut}}">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-3" style="margin-left: -5%;">
                                             <label for="dv">DV </label>
                                             <input type="text" class="form-control" name="dv" id="dv" value="{{$usuario->dv}}">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mt-4">
+                                <div class="col-md-6">
                                     <label for="name">Nombre </label>
                                     <input type="text" class="form-control" name="name" id="name" value="{{$usuario->name}}">
                                 </div>
 
-                                <div class="col-md-12 mt-4">
+                                <div class="col-md-6 mt-4">
                                     <label for="email">E-mail </label>
                                     <input type="text" class="form-control" name="email" id="email" value="{{$usuario->email}}">
                                 </div>
 
-                                <div class="col-md-12 mt-4">
+                                <div class="col-md-6 mt-4">
                                     <label for="telefono">Teléfono </label>
                                     <input type="text" class="form-control" name="telefono" id="telefono" value="{{$usuario->telefono}}">
                                 </div>
@@ -76,20 +76,115 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-12 mt-4">
-                                    <label for="departamentos">Departamentos </label>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="instituciones">Instituciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="instituciones[]" id="instituciones" class="form-control" multiple>
+                                                @foreach($instituciones as $institucion)
+                                                @if(in_array($institucion->id,$iu))
+                                                <option value="{{$institucion->id}}" selected>{{$institucion->nombre}}</option>
+                                                @else
+                                                <option value="{{$institucion->id}}">{{$institucion->nombre}}</option>
+                                                @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="instituciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-12" id="div_select">
-                                    <select name="departamentos[]" id="departamentos" class="form-control" multiple>
-                                        @foreach($departamentos as $dp)
-                                        @if(in_array($dp->id,$du))
-                                        <option value="{{$dp->id}}" selected>{{$dp->nombre}}</option>
-                                        @else
-                                        <option value="{{$dp->id}}">{{$dp->nombre}}</option>
-                                        @endif
 
-                                        @endforeach
-                                    </select>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="direcciones">Direcciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="direcciones[]" id="direcciones" class="form-control" multiple>
+                                                @foreach($direcciones as $direccion)
+                                                @if(in_array($direccion->id,$diu))
+                                                <option value="{{$direccion->id}}" selected>{{$direccion->nombre}}</option>
+                                                @else
+                                                <option value="{{$direccion->id}}">{{$direccion->nombre}}</option>
+                                                @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="direcciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="sub_direcciones">Sub direcciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="sub_direcciones[]" id="sub_direcciones" class="form-control" multiple>
+                                                @foreach($sub_direcciones as $sub_direccion)
+                                                @if(in_array($sub_direccion->id,$sdiu))
+                                                <option value="{{$sub_direccion->id}}" selected>{{$sub_direccion->nombre}}</option>
+                                                @else
+                                                <option value="{{$sub_direccion->id}}">{{$sub_direccion->nombre}}</option>
+                                                @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="sub_direcciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="departamentos">Departamentos </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select">
+                                            <select name="departamentos[]" id="departamentos" class="form-control" multiple>
+                                                @foreach($departamentos as $dp)
+                                                @if(in_array($dp->id,$du))
+                                                <option value="{{$dp->id}}" selected>{{$dp->nombre}}</option>
+                                                @else
+                                                <option value="{{$dp->id}}">{{$dp->nombre}}</option>
+                                                @endif
+
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="departamentos_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
+                                            <label for="unidades">Unidades </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="unidades[]" id="unidades" class="form-control" multiple>
+                                                @foreach($unidades as $unidad)
+                                                @if(in_array($unidad->id,$uu))
+                                                <option value="{{$unidad->id}}" selected>{{$unidad->nombre}}</option>
+                                                @else
+                                                <option value="{{$unidad->id}}">{{$unidad->nombre}}</option>
+                                                @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="unidad_span" style="color: red"></span>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -115,6 +210,26 @@
         $(".verEditar").attr('disabled', false);
         $('#departamentos').selectpicker({
             'noneSelectedText': 'Seleccione Departamento',
+            'multipleSeparator': ','
+        });
+
+        $('#instituciones').selectpicker({
+            'noneSelectedText': 'Seleccione Institución',
+            'multipleSeparator': ','
+        });
+
+        $('#direcciones').selectpicker({
+            'noneSelectedText': 'Seleccione dirección',
+            'multipleSeparator': ','
+        });
+
+        $('#unidades').selectpicker({
+            'noneSelectedText': 'Seleccione Unidad',
+            'multipleSeparator': ','
+        });
+
+        $('#sub_direcciones').selectpicker({
+            'noneSelectedText': 'Seleccione sub dirección',
             'multipleSeparator': ','
         });
     });
@@ -198,7 +313,7 @@
                     });
                 }
 
-                
+
             },
             error: function(error) {
 

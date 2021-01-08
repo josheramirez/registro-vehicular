@@ -116,6 +116,24 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-12 mt-4">
+                                            <label for="sub_direcciones">Sub direcciones </label>
+                                        </div>
+                                        <div class="col-md-12" id="div_select_departamento">
+                                            <select name="sub_direcciones[]" id="sub_direcciones" class="form-control" multiple>
+                                                @foreach($sub_direcciones as $sub_direccion)
+                                                <option value="{{$sub_direccion->id}}">{{$sub_direccion->nombre}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12 mt-1">
+                                            <span id="sub_direcciones_span" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-4">
                                             <label for="departamentos">Departamentos </label>
                                         </div>
                                         <div class="col-md-12" id="div_select_departamento">
@@ -145,24 +163,6 @@
                                         </div>
                                         <div class="col-md-12 mt-1">
                                             <span id="unidad_span" style="color: red"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-12 mt-4">
-                                            <label for="sub_direcciones">Sub direcciones </label>
-                                        </div>
-                                        <div class="col-md-12" id="div_select_departamento">
-                                            <select name="sub_direcciones[]" id="sub_direcciones" class="form-control" multiple>
-                                                @foreach($sub_direcciones as $sub_direccion)
-                                                <option value="{{$sub_direccion->id}}">{{$sub_direccion->nombre}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-12 mt-1">
-                                            <span id="sub_direcciones_span" style="color: red"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -201,22 +201,22 @@
     $(document).ready(function() {
         $(".verAgregar").attr('disabled', false);
         $('#departamentos').selectpicker({
-            'noneSelectedText': 'Seleccione Departamento',
+            'noneSelectedText': 'Seleccione departamento',
             'multipleSeparator': ','
         });
 
         $('#instituciones').selectpicker({
-            'noneSelectedText': 'Seleccione Institucion',
+            'noneSelectedText': 'Seleccione institución',
             'multipleSeparator': ','
         });
 
         $('#direcciones').selectpicker({
-            'noneSelectedText': 'Seleccione Direccion',
+            'noneSelectedText': 'Seleccione dirección',
             'multipleSeparator': ','
         });
 
         $('#unidades').selectpicker({
-            'noneSelectedText': 'Seleccione Unidad',
+            'noneSelectedText': 'Seleccione unidad',
             'multipleSeparator': ','
         });
 
