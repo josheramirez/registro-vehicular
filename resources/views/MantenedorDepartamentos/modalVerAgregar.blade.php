@@ -12,41 +12,38 @@
         background-color: white;
     }
 
+    .bootstrap-select {
+        border: 1px solid #ced4da !important;
+    }
 </style>
 
-
-
-<div id="modalVerEditar" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalVerAgregar" class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5>Edición de dirección ID : {{$direccion->id}}</h5>
+                <h5>Formulario creación de departamentos</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedor_direcciones.update', ['mantenedor_direccione' => $direccion->id])}}" method="PUT"
-                            id="formulario_editar_direccion">
+                        <form action="{{route('mantenedor_departamentos.store')}}" method="POST" id="formulario_agregar_direccion">
                             @csrf
+
                             <div class="row">
 
                                 <div class="col-md-12">
                                     <label for="nombre">Nombre </label>
-                                    <input type="text" class="form-control" name="nombre" id="nombre"
-                                        value="{{$direccion->nombre}}">
+                                    <input type="text" class="form-control" name="nombre" id="nombre" value="">
                                 </div>
 
                                 <div class="col-md-12 mt-4">
                                     <label for="observacion">Observación </label>
-                                    <input type="text" class="form-control" name="observacion" id="observacion"
-                                        value="{{$direccion->observacion}}">
+                                    <input type="text" class="form-control" name="observacion" id="observacion" value="">
                                 </div>
 
-                               
                             </div>
 
                             <div class="row mt-5">
@@ -55,37 +52,38 @@
                                 </div>
                             </div>
 
+
                         </form>
+
                     </div>
                 </div>
             </div>
-
 
         </div>
     </div>
 </div>
 <script type="text/javascript" src="{!! asset('/js/utilidades.js') !!}"></script>
 <script>
-    $(document).ready(function () {
-        $(".verEditar").attr('disabled', false);
+    $(document).ready(function() {
+        $(".verAgregar").attr('disabled', false);
     });
 
-    $("#formulario_editar_direccion").submit(function (e) {
+    $("#formulario_agregar_direccion").submit(function(e) {
         var lista = document.getElementsByClassName("spanclass");
         limpiarErrores(lista);
         e.preventDefault();
         var form = $(this);
         var url = form.attr('action');
         $.ajax({
-            type: "PUT",
+            type: "POST",
             url: url,
             data: form.serialize(), // serializa los elementos input del form
-            success: function (data) {
-                if (data == 'direccion_actualizada') {
+            success: function(data) {
+                if (data == 'departamento_guardada') {
                     let timerInterval
                     Swal.fire({
                         icon: 'success',
-                        title: 'Dirección actualizada exitosamente',
+                        title: 'Departamento creado exitosamente',
                         html: 'Cerrando ventana en <b>5</b> segundos.',
                         timer: 5000,
                         timerProgressBar: false,
@@ -115,7 +113,7 @@
                     });
                 }
             },
-            error: function (error) {
+            error: function(error) {
 
                 spanErrores(error);
             }
@@ -123,4 +121,30 @@
         });
     });
 
+    function mostrarPassword(value) {
+        console.log(value.substring(0, 2));
+        document.getElementById('password_label').innerHTML = 'Contraseña por defecto : ' + normalize(value.substring(0, 2)) + '.123456';
+    }
+
+    var normalize = (function() {
+        var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
+            to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+            mapping = {};
+
+        for (var i = 0, j = from.length; i < j; i++)
+            mapping[from.charAt(i)] = to.charAt(i);
+
+        return function(str) {
+            var ret = [];
+            for (var i = 0, j = str.length; i < j; i++) {
+                var c = str.charAt(i);
+                if (mapping.hasOwnProperty(str.charAt(i)))
+                    ret.push(mapping[c]);
+                else
+                    ret.push(c);
+            }
+            return ret.join('');
+        }
+
+    })();
 </script>

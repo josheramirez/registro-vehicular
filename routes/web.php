@@ -46,5 +46,10 @@ route::group(['middleware' => 'auth'], function () {
     Route::resource('mantenedor_instituciones', 'MantenedorInstitucionesController');
 
     Route::resource('mantenedor_direcciones', 'MantenedorDireccionesController');
+
     Route::resource('mantenedor_sub_direcciones', 'MantenedorSubDireccionesController');
+
+    Route::resource('mantenedor_unidades', 'MantenedorUnidadesController');
+
+    Route::resource('mantenedor_departamentos', 'MantenedorDepartamentosController');
 });

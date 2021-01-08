@@ -22,14 +22,14 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5>Edición de dirección ID : {{$direccion->id}}</h5>
+                <h5>Edición de departamento ID : {{$departamento->id}}</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedor_direcciones.update', ['mantenedor_direccione' => $direccion->id])}}" method="PUT"
+                        <form action="{{route('mantenedor_departamentos.update', ['mantenedor_departamento' => $departamento->id])}}" method="PUT"
                             id="formulario_editar_direccion">
                             @csrf
                             <div class="row">
@@ -37,13 +37,13 @@
                                 <div class="col-md-12">
                                     <label for="nombre">Nombre </label>
                                     <input type="text" class="form-control" name="nombre" id="nombre"
-                                        value="{{$direccion->nombre}}">
+                                        value="{{$departamento->nombre}}">
                                 </div>
 
                                 <div class="col-md-12 mt-4">
                                     <label for="observacion">Observación </label>
                                     <input type="text" class="form-control" name="observacion" id="observacion"
-                                        value="{{$direccion->observacion}}">
+                                        value="{{$departamento->observacion}}">
                                 </div>
 
                                
@@ -81,11 +81,11 @@
             url: url,
             data: form.serialize(), // serializa los elementos input del form
             success: function (data) {
-                if (data == 'direccion_actualizada') {
+                if (data == 'departamento_actualizada') {
                     let timerInterval
                     Swal.fire({
                         icon: 'success',
-                        title: 'Dirección actualizada exitosamente',
+                        title: 'Departamento actualizado exitosamente',
                         html: 'Cerrando ventana en <b>5</b> segundos.',
                         timer: 5000,
                         timerProgressBar: false,

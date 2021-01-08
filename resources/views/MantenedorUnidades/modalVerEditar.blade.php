@@ -22,28 +22,28 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5>Edición de dirección ID : {{$direccion->id}}</h5>
+                <h5>Edición de unidad ID : {{$unidad->id}}</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedor_direcciones.update', ['mantenedor_direccione' => $direccion->id])}}" method="PUT"
-                            id="formulario_editar_direccion">
+                        <form action="{{route('mantenedor_unidades.update', ['mantenedor_unidade' => $unidad->id])}}" method="PUT"
+                            id="formulario_editar_unidad">
                             @csrf
                             <div class="row">
 
                                 <div class="col-md-12">
                                     <label for="nombre">Nombre </label>
                                     <input type="text" class="form-control" name="nombre" id="nombre"
-                                        value="{{$direccion->nombre}}">
+                                        value="{{$unidad->nombre}}">
                                 </div>
 
                                 <div class="col-md-12 mt-4">
                                     <label for="observacion">Observación </label>
                                     <input type="text" class="form-control" name="observacion" id="observacion"
-                                        value="{{$direccion->observacion}}">
+                                        value="{{$unidad->observacion}}">
                                 </div>
 
                                
@@ -70,7 +70,7 @@
         $(".verEditar").attr('disabled', false);
     });
 
-    $("#formulario_editar_direccion").submit(function (e) {
+    $("#formulario_editar_unidad").submit(function (e) {
         var lista = document.getElementsByClassName("spanclass");
         limpiarErrores(lista);
         e.preventDefault();
@@ -81,11 +81,11 @@
             url: url,
             data: form.serialize(), // serializa los elementos input del form
             success: function (data) {
-                if (data == 'direccion_actualizada') {
+                if (data == 'unidad_actualizada') {
                     let timerInterval
                     Swal.fire({
                         icon: 'success',
-                        title: 'Dirección actualizada exitosamente',
+                        title: 'Unidad actualizada exitosamente',
                         html: 'Cerrando ventana en <b>5</b> segundos.',
                         timer: 5000,
                         timerProgressBar: false,

@@ -64,6 +64,8 @@
                         <a class="dropdown-item" href="{{route('mantenedor_instituciones.index')}}">Instituciones</a>
                         <a class="dropdown-item" href="{{route('mantenedor_direcciones.index')}}">Direcciones</a>
                         <a class="dropdown-item" href="{{route('mantenedor_sub_direcciones.index')}}">Sub Direcciones</a>
+                        <a class="dropdown-item" href="{{route('mantenedor_unidades.index')}}">Unidades</a>
+                        <a class="dropdown-item" href="{{route('mantenedor_departamentos.index')}}">Departamentos</a>
                     </div>
                 </li>
                
