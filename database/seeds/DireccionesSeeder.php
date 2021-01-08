@@ -12,19 +12,23 @@ class DireccionesSeeder extends Seeder
     public function run()
     {
         DB::table('direcciones')->insert([
-            'nombre' => 'Dirección 1' 
+            'nombre' => 'Dirección del trabajo',
+            'observacion' => 'Orientación trabajadores' 
         ]);
 
         DB::table('direcciones')->insert([
-            'nombre' => 'Dirección 2' 
+            'nombre' => 'Dirección Dos',
+            'observacion' => 'Descripción Dirección Dos' 
         ]);
 
         DB::table('direcciones')->insert([
-            'nombre' => 'Dirección 3' 
+            'nombre' => 'Dirección Tres',
+            'observacion' => 'Descripción Dirección Tres' 
         ]);
 
         DB::table('direcciones')->insert([
-            'nombre' => 'Dirección 4' 
+            'nombre' => 'Dirección Cuatro',
+            'observacion' => 'Descripción Dirección Cuatro'   
         ]);
     }
 }

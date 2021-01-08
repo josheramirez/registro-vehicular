@@ -13,7 +13,7 @@ class InstitucionesSeeder extends Seeder
     {
         DB::table('instituciones')->insert([
             'nombre' => 'ONU',
-            'observacion' => 'Organización Nacione Unidas'
+            'observacion' => 'Organización Naciones Unidas'
         ]);
 
         DB::table('instituciones')->insert([

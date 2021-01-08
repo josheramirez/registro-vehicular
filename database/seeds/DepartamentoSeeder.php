@@ -12,15 +12,18 @@ class DepartamentoSeeder extends Seeder
     public function run()
     {
         DB::table('departamentos')->insert([
-            'nombre' => 'Departamento de informática'
+            'nombre' => 'Departamento de informática',
+            'observacion' => 'Tecnologías de la información'
         ]);
 
         DB::table('departamentos')->insert([
-            'nombre' => 'Departamento de estadísticas'
+            'nombre' => 'Departamento de estadísticas',
+            'observacion' => 'Procesamiento de datos'
         ]);
 
         DB::table('departamentos')->insert([
-            'nombre' => 'Departamento de recursos humanos'
+            'nombre' => 'Departamento de recursos humanos',
+            'observacion' => 'Gestión de las personas'
         ]);
     }
 }

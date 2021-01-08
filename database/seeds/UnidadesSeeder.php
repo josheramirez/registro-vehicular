@@ -12,19 +12,23 @@ class UnidadesSeeder extends Seeder
     public function run()
     {
         DB::table('unidades')->insert([
-            'nombre' => 'UPIT' 
+            'nombre' => 'UPIT',
+            'observacion' => 'Unidad Desarrollo Dos'
         ]);
 
         DB::table('unidades')->insert([
-            'nombre' => 'DTI' 
+            'nombre' => 'DTI',
+            'observacion' => 'Unidad Desarrollo' 
         ]);
 
         DB::table('unidades')->insert([
-            'nombre' => 'Unidad 3' 
+            'nombre' => 'Unidad 3',
+            'observacion' => 'Unidad Desarrollo Dos' 
         ]);
 
         DB::table('unidades')->insert([
-            'nombre' => 'Unidad 4' 
+            'nombre' => 'Unidad 4',
+            'observacion' => 'Unidad Desarrollo Tres' 
         ]);
     }
 }
