@@ -15,6 +15,8 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'codigo' => strtoupper(Str::random(12)),
+            'rut' => 11111111,
+            'dv' => '1',
             'name' => 'Administrador',
             'email' => 'admin@admin.cl',
             'telefono' => '12345678',
@@ -43,6 +45,8 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'codigo' => strtoupper(Str::random(12)),
+            'rut' => 22222222,
+            'dv' => '2',
             'name' => 'Funcionario',
             'email' => 'funcionario@funcionario.cl',
             'telefono' => '12345678',

@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'codigo','name', 'email', 'password','activo','tipo_usuario',
+        'codigo', 'name', 'email', 'password', 'activo', 'tipo_usuario',
     ];
 
     /**
@@ -43,17 +43,20 @@ class User extends Authenticatable
     //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS DEPARTAMENTOS A LOS QUE PERTENECE EL USUARIO
     public function obtenerDepartamentos()
     {
-        $departamentos = $this->hasMany('App\DepartamentoUsuario', 'usuario_id', 'id')->withTrashed()->select('id','usuario_id','departamento_id','creador_id')->get();
-        foreach($departamentos as $dp){
+        $departamentos = $this->hasMany('App\DepartamentoUsuario', 'usuario_id', 'id')->withTrashed()->select('id', 'usuario_id', 'departamento_id', 'creador_id')->get();
+        $string = '';
+        foreach ($departamentos as $dp) {
             $dp['nombre_departamento'] = $dp->obtenerDepartamento()->nombre;
+            $string = $string . $dp->obtenerDepartamento()->nombre . ', ';
         }
-        return $departamentos;
+        $string = substr($string, 0, -2);
+        return $string;
     }
 
     //FUNCION QUE OBTIENE LA INFORMACION DEL CAMBIO CORRESPONDIENTE AL USUARIO
     public function obtenerCambio()
     {
-        $cambio = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id','usuario_antiguo','usuario_actual','usuario_modificador','created_at','observacion')->first();
+        $cambio = $this->hasOne('App\CambioUsuario', 'usuario_actual', 'id')->select('id', 'usuario_antiguo', 'usuario_actual', 'usuario_modificador', 'created_at', 'observacion')->first();
         return $cambio;
     }
 

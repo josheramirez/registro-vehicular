@@ -118,47 +118,47 @@ class MantenedorUsuariosController extends Controller
         //SE BUSCA TODOS LOS CAMBIOS QUE HA SUFRIDO EL USUARIO, SE USA COMO REFERENCIA EL CODIGO, EL CUAL ES UNICO Y NO MODIFICABLE
         $historial = User::where('codigo', $usuario->codigo)->select('id', 'codigo', 'name', 'email', 'email_old', 'telefono', 'activo', 'tipo_usuario')->get();
 
-        // $codigos = $historial->pluck('id')->toArray();
+        $codigos = $historial->pluck('id')->toArray();
 
-        // $cambios = CambioUsuario::whereIn('usuario_antiguo',$codigos)->get();
+        $cambios = CambioUsuario::whereIn('usuario_antiguo',$codigos)->get();
 
-        // foreach($cambios as $key => $ca){
-        //     $cambios[$key]['usuarios'] = $ca->obtenerUsuarios();
-        //     $cambios[$key]['fecha_cambio'] = utilidades::fechaVistas($ca->created_at);
-        //     $cambios[$key]['actual'] =  $cambios[$key]['usuarios'][1];
-        //     $cambios[$key]['antiguo'] =  $cambios[$key]['usuarios'][0];
+        foreach($cambios as $key => $ca){
+            $cambios[$key]['usuarios'] = $ca->obtenerUsuarios();
+            $cambios[$key]['fecha_cambio'] = utilidades::fechaVistas($ca->created_at);
+            $cambios[$key]['actual'] =  $cambios[$key]['usuarios'][1];
+            $cambios[$key]['antiguo'] =  $cambios[$key]['usuarios'][0];
 
-        //     $cambios[$key]['actual_departamentos'] =  $cambios[$key]['actual']->obtenerDepartamentos();
-        //     $cambios[$key]['antiguo_departamentos'] =  $cambios[$key]['antiguo']->obtenerDepartamentos();
-        // }
-        // dd($cambios);
+            $cambios[$key]['actual_departamentos'] =  $cambios[$key]['actual']->obtenerDepartamentos();
+            $cambios[$key]['antiguo_departamentos'] =  $cambios[$key]['antiguo']->obtenerDepartamentos();
+        }
+        //dd($cambios);
         
         //SE ITERA PARA CADA CAMBIO REALIZADO
-        foreach ($historial as $key => $his) {
+        // foreach ($historial as $key => $his) {
 
-            //SE OBTIENEN LOS DEPARTAMENTOS A LOS CUALES PERTENECE EL USUARIO EN CADA CAMBIO
-            $historial[$key]['departamentos'] = $his->obtenerDepartamentos();
+        //     //SE OBTIENEN LOS DEPARTAMENTOS A LOS CUALES PERTENECE EL USUARIO EN CADA CAMBIO
+        //     $historial[$key]['departamentos'] = $his->obtenerDepartamentos();
 
-            //EN ESTE CASO SE EVALUA SI ES QUE EL USUARIO POSEE CAMBIOS.
-            if ($his->obtenerCambio()) {
+        //     //EN ESTE CASO SE EVALUA SI ES QUE EL USUARIO POSEE CAMBIOS.
+        //     if ($his->obtenerCambio()) {
 
-                //EN CASO DE QUE POSEA CAMBIOS, OBTIENE EL CAMBIO CORRESPONDIENTE Y JUNTO CON ESTO TAMBIEN OBTIENE EL USUARIO MODIFICADOR Y LA FECHA DE MODIFICACION
-                $cambio = $his->obtenerCambio();
-                $historial[$key]['modificador'] = $cambio->obtenerModificador();
-                $historial[$key]['fecha_cambio'] = utilidades::fechaVistas($cambio->created_at);
-                $historial[$key]['accion'] = $cambio->observacion;
-            } else {
+        //         //EN CASO DE QUE POSEA CAMBIOS, OBTIENE EL CAMBIO CORRESPONDIENTE Y JUNTO CON ESTO TAMBIEN OBTIENE EL USUARIO MODIFICADOR Y LA FECHA DE MODIFICACION
+        //         $cambio = $his->obtenerCambio();
+        //         $historial[$key]['modificador'] = $cambio->obtenerModificador();
+        //         $historial[$key]['fecha_cambio'] = utilidades::fechaVistas($cambio->created_at);
+        //         $historial[$key]['accion'] = $cambio->observacion;
+        //     } else {
 
-                //EN CASO DE QUE NO POSEA CAMBIOS, ASIGNA ESTA INFORMACION COMO NULA
-                $historial[$key]['modificador'] = null;
-                $historial[$key]['fecha_cambio'] = null;
-                $historial[$key]['accion'] = null;
-            }
+        //         //EN CASO DE QUE NO POSEA CAMBIOS, ASIGNA ESTA INFORMACION COMO NULA
+        //         $historial[$key]['modificador'] = null;
+        //         $historial[$key]['fecha_cambio'] = null;
+        //         $historial[$key]['accion'] = null;
+        //     }
 
-            //OBTIENE EL TIPO DE USUARIO ASIGNADO EN EL CAMBIO
-            $historial[$key]['tipo_usuario'] = $his->obtenerTipoUsuario()->nombre;
-        }
-        return view('mantenedorUsuarios/modalVerHistorial')->with('usuario', $usuario)->with('historial', $historial);
+        //     //OBTIENE EL TIPO DE USUARIO ASIGNADO EN EL CAMBIO
+        //     $historial[$key]['tipo_usuario'] = $his->obtenerTipoUsuario()->nombre;
+        // }
+        return view('mantenedorUsuarios/modalVerHistorial')->with('usuario', $usuario)->with('historial', $cambios);
     }
 
     public function verEditar($id)

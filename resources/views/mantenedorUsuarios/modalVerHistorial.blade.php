@@ -33,7 +33,7 @@
                     <div class="col-md-10 offset-md-1">
 
                         <div class="row">
-                            <table class="table table-bordered table-sm text-center" style="font-size: 14.5px;">
+                            <table class="table table-bordered table-sm text-center" style="font-size: 13.5px;">
                                 <thead style="text-align: center;">
                                     <tr>
                                         <th>Nombre</th>
@@ -47,39 +47,52 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php $inicial = $historial[0]['usuarios'][0]; @endphp
+                                    <tr>
+                                        <td>{{$inicial['name']}}</td>
+
+                                        @if($inicial['activo']==1)
+                                        <td>{{$inicial['email']}}</td>
+                                        @else
+                                        <td>{{$inicial['email_old']}}</td>
+                                        @endif
+
+                                        <td>{{$inicial['telefono']}}</td>
+
+                                        <td>{{$inicial->obtenerTipoUsuario()->nombre}}</td>
+
+                                        <td>{{$inicial->obtenerDepartamentos()}}</td>
+
+                                        <td>NO APLICA</td>
+                                        <td>NO APLICA</td>
+                                        <td>NO APLICA</td>
+                                    </tr>
                                     @foreach($historial as $key1 => $his)
 
-                                    @if($his['activo']==1)
+                                    @if($his['usuarios'][1]['activo']==1)
                                     <tr style="color:green; font-weight: bold;">
                                         @else
                                     <tr>
                                         @endif
 
-                                        <td>{{$his['name']}}</td>
+                                        <td>{{$his['usuarios'][1]['name']}}</td>
 
-                                        @if($his['activo']==1)
-                                        <td>{{$his['email']}}</td>
+                                        @if($his['usuarios'][1]['activo']==1)
+                                        <td>{{$his['usuarios'][1]['email']}}</td>
                                         @else
-                                        <td>{{$his['email_old']}}</td>
+                                        <td>{{$his['usuarios'][1]['email_old']}}</td>
                                         @endif
 
-                                        <td>{{$his['telefono']}}</td>
+                                        <td>{{$his['usuarios'][1]['telefono']}}</td>
 
-                                        <td>{{$his['tipo_usuario']}}</td>
+                                        <td>{{$his['usuarios'][1]->obtenerTipoUsuario()->nombre}}</td>
 
-                                        <td>
-                                            <ul style="margin-bottom: 0;">
-                                                @foreach($his['departamentos'] as $dp)
-                                                <li>{{$dp['nombre_departamento']}}</li>
-                                                @endforeach
-                                            </ul>
-                                        </td>
-                                        <td>{{$his['accion']}}</td>
-                                        @if($his['modificador'])
-                                        <td>{{$his['modificador']['name']}}</td>
-                                        @else
-                                        <td></td>
-                                        @endif
+                                        <td>{{$inicial->obtenerDepartamentos()}}</td>
+
+                                        <td>{{$his['observacion']}}</td>
+
+                                        <td>{{$his['usuarios'][2]['name']}}</td>
+
 
                                         @if($his['fecha_cambio'])
                                         <td>{{$his['fecha_cambio']}}</td>
