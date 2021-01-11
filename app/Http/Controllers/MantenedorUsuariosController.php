@@ -79,6 +79,7 @@ class MantenedorUsuariosController extends Controller
                 'rut' => ['required', 'max:11', new RutValido($data['rut'], $data['dv'])],
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
+                'anexo' => ['required', 'digits_between:5,12'],
                 'departamentos' => ['required'],
                 'tipo_usuario' => ['required'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -113,6 +114,7 @@ class MantenedorUsuariosController extends Controller
         $usuario->name = $data['name'];
         $usuario->email = $data['email'];
         $usuario->telefono = $data['telefono'];
+        $usuario->anexo = $data['anexo'];
         $usuario->activo = 1;
         $usuario->tipo_usuario = $data['tipo_usuario'];
         //SE GENERA LA CONTRASEÑA GENERICA DEL USUARIO, SE ELIMINAN POSIBLES TILDES EN EL NOMBRE DEL USUARIO YA QUE LA CONTRASEÑA SE CONBSTRUYE SEGUN EL NOMBRE DEL USUARIO
@@ -188,17 +190,18 @@ class MantenedorUsuariosController extends Controller
 
 
         //SE BUSCA TODOS LOS CAMBIOS QUE HA SUFRIDO EL USUARIO, SE USA COMO REFERENCIA EL CODIGO, EL CUAL ES UNICO Y NO MODIFICABLE
-        $historial = User::where('codigo', $usuario->codigo)->select('id', 'codigo', 'name', 'email', 'email_old', 'telefono', 'activo', 'tipo_usuario')->get();
+        $historial = User::where('codigo', $usuario->codigo)->select('id', 'rut', 'codigo', 'name', 'email', 'email_old', 'telefono', 'anexo', 'activo', 'tipo_usuario')->get();
 
         $codigos = $historial->pluck('id')->toArray();
 
         $cambios = CambioUsuario::whereIn('usuario_antiguo', $codigos)->get();
 
         foreach ($cambios as $key => $ca) {
-            $cambios[$key]['usuarios'] = $ca->obtenerUsuarios();
+            $usuarios_cambio = $ca->obtenerUsuarios();
             $cambios[$key]['fecha_cambio'] = utilidades::fechaVistas($ca->created_at);
-            $cambios[$key]['actual'] =  $cambios[$key]['usuarios'][1];
-            $cambios[$key]['antiguo'] =  $cambios[$key]['usuarios'][0];
+            $cambios[$key]['modificador'] =  $usuarios_cambio[2];
+            $cambios[$key]['actual'] =  $usuarios_cambio[1];
+            $cambios[$key]['antiguo'] =  $usuarios_cambio[0];
 
             $cambios[$key]['actual_departamentos'] =  $cambios[$key]['actual']->obtenerDepartamentos();
             $cambios[$key]['antiguo_departamentos'] =  $cambios[$key]['antiguo']->obtenerDepartamentos();
@@ -215,7 +218,7 @@ class MantenedorUsuariosController extends Controller
         //OBTIENE PARAMETROS DE INSTITUCIONES Y LAS INSTITUCIONES DEL USUARIO. ESTO SE REPITE PARA CADA PARAMETRO
         $instituciones = Institucion::all();
         $iu = InstitucionUsuario::where('usuario_id', $id)->pluck('institucion_id')->toArray();
-        
+
         $direcciones = Direccion::all();
         $diu = DireccionUsuario::where('usuario_id', $id)->pluck('direccion_id')->toArray();
 
@@ -252,6 +255,7 @@ class MantenedorUsuariosController extends Controller
                 'rut' => ['required', 'max:11', new RutValido($data['rut'], $data['dv'])],
                 'name' => ['required', 'string', 'max:80'],
                 'telefono' => ['required', 'digits_between:5,12'],
+                'anexo' => ['required', 'digits_between:5,12'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,NULL,id,deleted_at,NUL'],
             ],
             [
@@ -271,39 +275,40 @@ class MantenedorUsuariosController extends Controller
         $usuario->name = $data['name'];
         $usuario->email = $data['email'];
         $usuario->telefono = $data['telefono'];
+        $usuario->anexo = $data['anexo'];
         $usuario->tipo_usuario = $data['tipo_usuario'];
         $usuario->activo = 1;
 
-        if(isset($data['instituciones'])){
+        if (isset($data['instituciones'])) {
             $cambio_institucion = $this->evaluarCambioInstituciones($usuario, $data['instituciones']);
-        }else{
+        } else {
             $cambio_institucion = $this->evaluarCambioInstituciones($usuario, []);
         }
 
-        if(isset($data['direcciones'])){
+        if (isset($data['direcciones'])) {
             $cambio_direccion = $this->evaluarCambioDirecciones($usuario, $data['direcciones']);
-        }else{
+        } else {
             $cambio_direccion = $this->evaluarCambioDirecciones($usuario, []);
         }
 
-        if(isset($data['sub_direcciones'])){
+        if (isset($data['sub_direcciones'])) {
             $cambio_sub_direccion = $this->evaluarCambioSubDirecciones($usuario, $data['sub_direcciones']);
-        }else{
+        } else {
             $cambio_sub_direccion = $this->evaluarCambioSubDirecciones($usuario, []);
         }
-       
-        if(isset($data['departamentos'])){
+
+        if (isset($data['departamentos'])) {
             $cambio_departamento = $this->evaluarCambioDepartamentos($usuario, $data['departamentos']);
-        }else{
+        } else {
             $cambio_departamento = $this->evaluarCambioDepartamentos($usuario, []);
         }
 
-        if(isset($data['unidades'])){
+        if (isset($data['unidades'])) {
             $cambio_unidad = $this->evaluarCambioUnidades($usuario, $data['unidades']);
-        }else{
+        } else {
             $cambio_unidad = $this->evaluarCambioUnidades($usuario, []);
         }
-        
+
         if (!$cambio_institucion && !$cambio_direccion  && !$cambio_sub_direccion  && !$cambio_departamento  && !$cambio_unidad && count($usuario->getDirty()) == 0) {
             return 'sin_cambios';
         } else {
@@ -324,6 +329,7 @@ class MantenedorUsuariosController extends Controller
             $usuario_nuevo->name = $data['name'];
             $usuario_nuevo->email = $data['email'];
             $usuario_nuevo->telefono = $data['telefono'];
+            $usuario_nuevo->anexo = $data['anexo'];
             $usuario_nuevo->email =  $email;
             $usuario_nuevo->email_old = NULL;
             $usuario_nuevo->tipo_usuario = $data['tipo_usuario'];
@@ -344,7 +350,7 @@ class MantenedorUsuariosController extends Controller
             InstitucionUsuario::where('usuario_id', $data['usuario_id'])->delete();
 
             //UNA VEZ ELIMINADOS, SE PROCEDE A LA ASIGNACION DE LOS VALORES AL NUEVO REGISTRO DEL USUARIO ACTUALIZADO
-            if(isset($data['instituciones'])){
+            if (isset($data['instituciones'])) {
                 foreach ($data['instituciones'] as $institucion) {
                     $inst = new InstitucionUsuario();
                     $inst->usuario_id = $usuario_nuevo->id;
@@ -353,51 +359,50 @@ class MantenedorUsuariosController extends Controller
                     $inst->save();
                 }
             }
-           
+
             //ESTO SE REPITE PARA INSTITUCION, DIRECCION, DEPARTAMENTO, ETC.
-            if(isset($data['direcciones'])){
-            DireccionUsuario::where('usuario_id', $data['usuario_id'])->delete();
-            foreach ($data['direcciones'] as $direccion) {
-                $dir = new DireccionUsuario();
-                $dir->usuario_id = $usuario_nuevo->id;
-                $dir->direccion_id = $direccion;
-                $dir->creador_id = $logeado->id;
-                $dir->save();
+            if (isset($data['direcciones'])) {
+                DireccionUsuario::where('usuario_id', $data['usuario_id'])->delete();
+                foreach ($data['direcciones'] as $direccion) {
+                    $dir = new DireccionUsuario();
+                    $dir->usuario_id = $usuario_nuevo->id;
+                    $dir->direccion_id = $direccion;
+                    $dir->creador_id = $logeado->id;
+                    $dir->save();
+                }
             }
-        }
 
-        if(isset($data['sub_direcciones'])){
-            SubDireccionUsuario::where('usuario_id', $data['usuario_id'])->delete();
-            foreach ($data['sub_direcciones'] as $sub_direccion) {
-                $sub_dir = new SubDireccionUsuario();
-                $sub_dir->usuario_id = $usuario_nuevo->id;
-                $sub_dir->sub_direccion_id = $sub_direccion;
-                $sub_dir->creador_id = $logeado->id;
-                $sub_dir->save();
+            if (isset($data['sub_direcciones'])) {
+                SubDireccionUsuario::where('usuario_id', $data['usuario_id'])->delete();
+                foreach ($data['sub_direcciones'] as $sub_direccion) {
+                    $sub_dir = new SubDireccionUsuario();
+                    $sub_dir->usuario_id = $usuario_nuevo->id;
+                    $sub_dir->sub_direccion_id = $sub_direccion;
+                    $sub_dir->creador_id = $logeado->id;
+                    $sub_dir->save();
+                }
             }
-        }
 
-        if(isset($data['unidades'])){
-            UnidadUsuario::where('usuario_id', $data['usuario_id'])->delete();
-            foreach ($data['unidades'] as $unidad) {
-                $uni = new UnidadUsuario();
-                $uni->usuario_id = $usuario_nuevo->id;
-                $uni->unidad_id = $unidad;
-                $uni->creador_id = $logeado->id;
-                $uni->save();
+            if (isset($data['unidades'])) {
+                UnidadUsuario::where('usuario_id', $data['usuario_id'])->delete();
+                foreach ($data['unidades'] as $unidad) {
+                    $uni = new UnidadUsuario();
+                    $uni->usuario_id = $usuario_nuevo->id;
+                    $uni->unidad_id = $unidad;
+                    $uni->creador_id = $logeado->id;
+                    $uni->save();
+                }
             }
-        }
-        if(isset($data['departamentos'])){
-            DepartamentoUsuario::where('usuario_id', $data['usuario_id'])->delete();
-            foreach ($data['departamentos'] as $dp) {
-                $du = new DepartamentoUsuario();
-                $du->usuario_id = $usuario_nuevo->id;
-                $du->departamento_id = $dp;
-                $du->creador_id = $logeado->id;
-                $du->save();
+            if (isset($data['departamentos'])) {
+                DepartamentoUsuario::where('usuario_id', $data['usuario_id'])->delete();
+                foreach ($data['departamentos'] as $dp) {
+                    $du = new DepartamentoUsuario();
+                    $du->usuario_id = $usuario_nuevo->id;
+                    $du->departamento_id = $dp;
+                    $du->creador_id = $logeado->id;
+                    $du->save();
+                }
             }
-        }
-
         }
 
         return 'usuario_actualizado';
@@ -491,19 +496,60 @@ class MantenedorUsuariosController extends Controller
             $da->delete();
         }
 
-         //ELIMINA LOS DEPARTAMENTOS DEL USUARIO ANTIGUO
-         $instituciones_antiguas = InstitucionUsuario::where('usuario_id', $id)->get();
-        
-         //ASIGNA LOS DEPARTAMENTOS PARA LE NUEVO USUARIO
-         foreach ($instituciones_antiguas as $ia) {
-             $in = $ia->replicate();
-             $in->usuario_id = $usuario_nuevo->id;
-             $in->creador_id = Auth::user()->id;
-             $in->save();
-             $ia->delete();
-         }
+        //ELIMINA LAS INSTITUCIONES DEL USUARIO ANTIGUO
+        $instituciones_antiguas = InstitucionUsuario::where('usuario_id', $id)->get();
+
+        //ASIGNA LAS INSTITUCIONES PARA LE NUEVO USUARIO
+        foreach ($instituciones_antiguas as $ia) {
+            $in = $ia->replicate();
+            $in->usuario_id = $usuario_nuevo->id;
+            $in->creador_id = Auth::user()->id;
+            $in->save();
+            $ia->delete();
+        }
+
+        //ELIMINA LAS DIRECCIONES DEL USUARIO ANTIGUO
+        $direcciones_antiguas = DireccionUsuario::where('usuario_id', $id)->get();
+
+        //ASIGNA LAS DIRECCIONES PARA LE NUEVO USUARIO
+        foreach ($direcciones_antiguas as $da) {
+            $dn = $da->replicate();
+            $dn->usuario_id = $usuario_nuevo->id;
+            $dn->creador_id = Auth::user()->id;
+            $dn->save();
+            $da->delete();
+        }
+
+        //ELIMINA LAS SUB DIRECCIONES DEL USUARIO ANTIGUO
+        $sub_direcciones_antiguas = SubDireccionUsuario::where('usuario_id', $id)->get();
+
+        //ASIGNA LAS SUB DIRECCIONES PARA LE NUEVO USUARIO
+        foreach ($sub_direcciones_antiguas as $sda) {
+            $sdn = $sda->replicate();
+            $sdn->usuario_id = $usuario_nuevo->id;
+            $sdn->creador_id = Auth::user()->id;
+            $sdn->save();
+            $sda->delete();
+        }
+
+        //ELIMINA LAS UNIDADES DEL USUARIO ANTIGUO
+        $unidades = UnidadUsuario::where('usuario_id', $id)->get();
+
+        //ASIGNA LAS UNIDADES PARA LE NUEVO USUARIO
+        foreach ($unidades as $ua) {
+            $un = $ua->replicate();
+            $un->usuario_id = $usuario_nuevo->id;
+            $un->creador_id = Auth::user()->id;
+            $un->save();
+            $ua->delete();
+        }
 
         return 'usuario_recuperado';
+    }
+
+    public function verOtrosDetalles($id){
+        $usuario = User::find($id);
+        return view('mantenedorUsuarios/modalVerOtrosDetalles')->with('usuario', $usuario);
     }
 
     public static function evaluarCambioInstituciones($antiguo, $actualizado)

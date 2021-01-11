@@ -62,6 +62,11 @@
                                     <input type="text" class="form-control" name="telefono" id="telefono" value="">
                                 </div>
 
+                                <div class="col-md-6 mt-4">
+                                    <label for="anexo">Anexo </label>
+                                    <input type="text" class="form-control" name="anexo" id="anexo" value="">
+                                </div>
+
                                 <div class="col-md-12 mt-4">
                                     <label for="tipo_usuario">Tipo de usuario </label>
                                 </div>

@@ -68,6 +68,8 @@
 
 <div id="modal"></div>
 
+<div id="otros_detalles"></div>
+
 <script>
     $(document).ready(function() {
         $('#tabla_usuarios').DataTable({

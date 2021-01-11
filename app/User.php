@@ -40,6 +40,48 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS INSTITUCIONES A LOS QUE PERTENECE EL USUARIO
+    public function obtenerInstituciones()
+    {
+        $instituciones = $this->hasMany('App\InstitucionUsuario', 'usuario_id', 'id')->withTrashed()->select('id', 'usuario_id', 'institucion_id', 'creador_id')->get();
+        $string = '';
+        foreach ($instituciones as $ins) {
+            $institucion = $ins->obtenerInstitucion();
+            $ins['nombre_institucion'] = $institucion->nombre;
+            $string = $string . $institucion->nombre . ', ';
+        }
+        $string = substr($string, 0, -2);
+        return $string;
+    }
+
+    //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS DIRECCIONES A LOS QUE PERTENECE EL USUARIO
+    public function obtenerDirecciones()
+    {
+        $direcciones = $this->hasMany('App\DireccionUsuario', 'usuario_id', 'id')->withTrashed()->select('id', 'usuario_id', 'direccion_id', 'creador_id')->get();
+        $string = '';
+        foreach ($direcciones as $dir) {
+            $direccion = $dir->obtenerDireccion();
+            $dir['nombre_direccion'] = $direccion->nombre;
+            $string = $string . $direccion->nombre . ', ';
+        }
+        $string = substr($string, 0, -2);
+        return $string;
+    }
+
+    //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS SUB DIRECCIONES A LOS QUE PERTENECE EL USUARIO
+    public function obtenerSubDirecciones()
+    {
+        $sub_direcciones = $this->hasMany('App\SubDireccionUsuario', 'usuario_id', 'id')->withTrashed()->select('id', 'usuario_id', 'sub_direccion_id', 'creador_id')->get();
+        $string = '';
+        foreach ($sub_direcciones as $sdir) {
+            $sub_direccion = $sdir->obtenerSubDireccion();
+            $sdir['nombre_sub_direccion'] = $sub_direccion->nombre;
+            $string = $string . $sub_direccion->nombre . ', ';
+        }
+        $string = substr($string, 0, -2);
+        return $string;
+    }
+
     //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS DEPARTAMENTOS A LOS QUE PERTENECE EL USUARIO
     public function obtenerDepartamentos()
     {
@@ -48,6 +90,20 @@ class User extends Authenticatable
         foreach ($departamentos as $dp) {
             $dp['nombre_departamento'] = $dp->obtenerDepartamento()->nombre;
             $string = $string . $dp->obtenerDepartamento()->nombre . ', ';
+        }
+        $string = substr($string, 0, -2);
+        return $string;
+    }
+
+    //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LAS UNIDADES A LAS QUE PERTENECE EL USUARIO
+    public function obtenerUnidades()
+    {
+        $unidades = $this->hasMany('App\UnidadUsuario', 'usuario_id', 'id')->withTrashed()->select('id', 'usuario_id', 'unidad_id', 'creador_id')->get();
+        $string = '';
+        foreach ($unidades as $uni) {
+            $unidad = $uni->obtenerUnidad();
+            $uni['nombre_sub_direccion'] = $unidad->nombre;
+            $string = $string . $unidad->nombre . ', ';
         }
         $string = substr($string, 0, -2);
         return $string;

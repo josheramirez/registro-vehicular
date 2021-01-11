@@ -14,9 +14,9 @@ class CambioUsuario extends Model
     public function obtenerUsuarios()
     {
         $usuarios = collect();
-        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_antiguo')->select('id','name','email','email_old','telefono','activo','tipo_usuario')->first());
-        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_actual')->select('id','name','email','email_old','telefono','activo','tipo_usuario')->first());
-        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_modificador')->select('id','name','email','email_old','telefono','activo','tipo_usuario')->first());
+        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_antiguo')->select('id','rut','dv', 'codigo', 'name', 'email', 'email_old', 'telefono','anexo', 'activo', 'tipo_usuario')->first());
+        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_actual')->select('id','rut','dv', 'codigo', 'name', 'email', 'email_old', 'telefono','anexo', 'activo', 'tipo_usuario')->first());
+        $usuarios->push($this->hasOne('App\User', 'id', 'usuario_modificador')->select('id','rut','dv', 'codigo', 'name', 'email', 'email_old', 'telefono','anexo', 'activo', 'tipo_usuario')->first());
         return $usuarios;
     }
 
