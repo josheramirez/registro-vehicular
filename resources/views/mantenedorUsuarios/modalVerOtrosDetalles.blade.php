@@ -27,19 +27,69 @@
             <div class="modal-body">
                 <ul>
                     <li>
-                        Instituciones : {{$usuario->obtenerInstituciones()}}
+                        Instituciones :
+                        <ul>
+                            @if(is_string($usuario->obtenerInstituciones()))
+                            <li>{{$usuario->obtenerInstituciones()}}</li>
+                            @else
+                            @foreach($usuario->obtenerInstituciones() as $ins)
+                            <li>{{$ins->nombre_institucion}}</li>
+                            @endforeach
+                            @endif
+                           
+                        </ul>
                     </li>
                     <li>
-                        Direcciones : {{$usuario->obtenerDirecciones()}}
+                        Direcciones :
+                        <ul>
+                            @if(is_string($usuario->obtenerDirecciones()))
+                            <li>{{$usuario->obtenerDirecciones()}}</li>
+                            @else
+                            @foreach($usuario->obtenerDirecciones() as $dir)
+                            <li>{{$dir->nombre_direccion}}</li>
+                            @endforeach
+                            @endif
+                          
+                        </ul>
                     </li>
                     <li>
-                        Sub Direcciones : {{$usuario->obtenerSubDirecciones()}}
+                        Sub Direcciones :
+                        <ul>
+                            @if(is_string($usuario->obtenerSubDirecciones()))
+                            <li>{{$usuario->obtenerSubDirecciones()}}</li>
+                            @else
+                            @foreach($usuario->obtenerSubDirecciones() as $sdir)
+                            <li>{{$sdir->nombre_sub_direccion}}</li>
+                            @endforeach
+                            @endif
+                          
+                        </ul>
                     </li>
                     <li>
-                        Departamentos : {{$usuario->obtenerDepartamentos()}}
+                        Departamentos :
+                        <ul>
+                            @if(is_string($usuario->obtenerDepartamentos()))
+                            <li>{{$usuario->obtenerDepartamentos()}}</li>
+                            @else
+                            @foreach($usuario->obtenerDepartamentos() as $dp)
+                            <li>{{$dp->nombre_departamento}}</li>
+                            @endforeach
+                            @endif
+                           
+                        </ul>
                     </li>
                     <li>
-                        Unidades : {{$usuario->obtenerUnidades()}}
+                        Unidades :
+                        <ul>
+                            @if(is_string($usuario->obtenerUnidades()))
+                            <li>{{$usuario->obtenerUnidades()}}</li>
+                            @else
+                            @foreach($usuario->obtenerUnidades() as $uni)
+                            <li>{{$uni->nombre_unidad}}</li>
+                            @endforeach
+                            @endif
+                          
+                        </ul>
                     </li>
                 </ul>
             </div>

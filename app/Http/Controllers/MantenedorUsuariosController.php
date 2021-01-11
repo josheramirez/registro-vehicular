@@ -549,6 +549,7 @@ class MantenedorUsuariosController extends Controller
 
     public function verOtrosDetalles($id){
         $usuario = User::find($id);
+        //dd(is_string($usuario->obtenerInstituciones()));
         return view('mantenedorUsuarios/modalVerOtrosDetalles')->with('usuario', $usuario);
     }
 

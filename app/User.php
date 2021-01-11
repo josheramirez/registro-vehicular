@@ -50,8 +50,11 @@ class User extends Authenticatable
             $ins['nombre_institucion'] = $institucion->nombre;
             $string = $string . $institucion->nombre . ', ';
         }
-        $string = substr($string, 0, -2);
-        return $string;
+        if (count($instituciones)>0) {
+            return $instituciones;
+        } else {
+            return  "SIN INFORMACIÓN";
+        };
     }
 
     //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS DIRECCIONES A LOS QUE PERTENECE EL USUARIO
@@ -65,7 +68,11 @@ class User extends Authenticatable
             $string = $string . $direccion->nombre . ', ';
         }
         $string = substr($string, 0, -2);
-        return $string;
+        if (count($direcciones)>0) {
+            return $direcciones;
+        } else {
+            return  "SIN INFORMACIÓN";
+        };
     }
 
     //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS SUB DIRECCIONES A LOS QUE PERTENECE EL USUARIO
@@ -79,7 +86,11 @@ class User extends Authenticatable
             $string = $string . $sub_direccion->nombre . ', ';
         }
         $string = substr($string, 0, -2);
-        return $string;
+        if (count($sub_direcciones)>0) {
+            return $sub_direcciones;
+        } else {
+            return  "SIN INFORMACIÓN";
+        };
     }
 
     //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LOS DEPARTAMENTOS A LOS QUE PERTENECE EL USUARIO
@@ -92,7 +103,11 @@ class User extends Authenticatable
             $string = $string . $dp->obtenerDepartamento()->nombre . ', ';
         }
         $string = substr($string, 0, -2);
-        return $string;
+        if (count($departamentos)>0) {
+            return $departamentos;
+        } else {
+            return  "SIN INFORMACIÓN";
+        };
     }
 
     //FUNCION QUE RETORNA UN ARRAY CON LA INFORMACION DE LAS UNIDADES A LAS QUE PERTENECE EL USUARIO
@@ -102,11 +117,15 @@ class User extends Authenticatable
         $string = '';
         foreach ($unidades as $uni) {
             $unidad = $uni->obtenerUnidad();
-            $uni['nombre_sub_direccion'] = $unidad->nombre;
+            $uni['nombre_unidad'] = $unidad->nombre;
             $string = $string . $unidad->nombre . ', ';
         }
         $string = substr($string, 0, -2);
-        return $string;
+        if (count($unidades)>0) {
+            return $unidades;
+        } else {
+            return "SIN INFORMACIÓN";
+        };
     }
 
     public function obtenerDepartamentosId()
@@ -139,7 +158,7 @@ class User extends Authenticatable
         return implode(",", $unidades);
     }
 
-    
+
 
     //FUNCION QUE OBTIENE LA INFORMACION DEL CAMBIO CORRESPONDIENTE AL USUARIO
     public function obtenerCambio()
