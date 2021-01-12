@@ -15,9 +15,11 @@
     .bootstrap-select {
         border: 1px solid #ced4da !important;
     }
+
 </style>
 
-<div id="modalVerAgregar" class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalVerAgregar" class="modal fade bd-example-modal-md" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -29,7 +31,8 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <form action="{{route('mantenedorusuarios.agregar')}}" method="POST" id="formulario_agregar_usuario">
+                        <form action="{{route('mantenedorusuarios.agregar')}}" method="POST"
+                            id="formulario_agregar_usuario">
                             @csrf
 
                             <div class="row">
@@ -49,7 +52,8 @@
 
                                 <div class="col-md-6">
                                     <label for="name">Nombre </label>
-                                    <input type="text" class="form-control" name="name" id="name" value="" onchange="mostrarPassword(this.value)">
+                                    <input type="text" class="form-control" name="name" id="name" value=""
+                                        onchange="mostrarPassword(this.value)">
                                 </div>
 
                                 <div class="col-md-6 mt-4">
@@ -88,7 +92,8 @@
                                             <label for="instituciones">Instituciones </label>
                                         </div>
                                         <div class="col-md-12" id="div_select_departamento">
-                                            <select name="instituciones[]" id="instituciones" class="form-control" multiple>
+                                            <select name="instituciones[]" id="instituciones" class="form-control"
+                                                multiple>
                                                 @foreach($instituciones as $institucion)
                                                 <option value="{{$institucion->id}}">{{$institucion->nombre}}</option>
                                                 @endforeach
@@ -124,9 +129,11 @@
                                             <label for="sub_direcciones">Sub direcciones </label>
                                         </div>
                                         <div class="col-md-12" id="div_select_departamento">
-                                            <select name="sub_direcciones[]" id="sub_direcciones" class="form-control" multiple>
+                                            <select name="sub_direcciones[]" id="sub_direcciones" class="form-control"
+                                                multiple>
                                                 @foreach($sub_direcciones as $sub_direccion)
-                                                <option value="{{$sub_direccion->id}}">{{$sub_direccion->nombre}}</option>
+                                                <option value="{{$sub_direccion->id}}">{{$sub_direccion->nombre}}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -142,7 +149,8 @@
                                             <label for="departamentos">Departamentos </label>
                                         </div>
                                         <div class="col-md-12" id="div_select_departamento">
-                                            <select name="departamentos[]" id="departamentos" class="form-control" multiple>
+                                            <select name="departamentos[]" id="departamentos" class="form-control"
+                                                multiple>
                                                 @foreach($departamentos as $dp)
                                                 <option value="{{$dp->id}}">{{$dp->nombre}}</option>
                                                 @endforeach
@@ -169,6 +177,57 @@
                                         <div class="col-md-12 mt-1">
                                             <span id="unidad_span" style="color: red"></span>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <div class="row">
+                                        <table class="table table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Módulo</th>
+                                                    <th>Leer</th>
+                                                    <th>Crear</th>
+                                                    <th>Editar</th>
+                                                    <th>Eliminar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($modulos as $modulo)
+                                                <tr>
+                                                    <td>{{$modulo->nombre}}</td>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="permiso_leer_{{$modulo->id}}" name="modulo_{{$modulo->id}}[]" value="leer">
+                                                            <label class="custom-control-label" for="permiso_leer_{{$modulo->id}}"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="permiso_crear_{{$modulo->id}}" name="modulo_{{$modulo->id}}[]" value="crear">
+                                                            <label class="custom-control-label" for="permiso_crear_{{$modulo->id}}"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="permiso_editar_{{$modulo->id}}" name="modulo_{{$modulo->id}}[]" value="editar">
+                                                            <label class="custom-control-label" for="permiso_editar_{{$modulo->id}}"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input"
+                                                                id="permiso_eliminar_{{$modulo->id}}" name="modulo_{{$modulo->id}}[]" value="eliminar">
+                                                            <label class="custom-control-label" for="permiso_eliminar_{{$modulo->id}}"></label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
 
@@ -203,7 +262,7 @@
 </div>
 <script type="text/javascript" src="{!! asset('/js/utilidades.js') !!}"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $(".verAgregar").attr('disabled', false);
         $('#departamentos').selectpicker({
             'noneSelectedText': 'Seleccione departamento',
@@ -229,14 +288,14 @@
             'noneSelectedText': 'Seleccione sub dirección',
             'multipleSeparator': ','
         });
-        
+
 
         $('#tipo_usuario').selectpicker({
             'noneSelectedText': 'Seleccione Tipo de usuario',
         });
     });
 
-    $("#formulario_agregar_usuario").submit(function(e) {
+    $("#formulario_agregar_usuario").submit(function (e) {
         var lista = document.getElementsByClassName("spanclass");
         limpiarErrores(lista);
         e.preventDefault();
@@ -246,7 +305,7 @@
             type: "POST",
             url: url,
             data: form.serialize(), // serializa los elementos input del form
-            success: function(data) {
+            success: function (data) {
                 if (data == 'usuario_creado') {
                     let timerInterval
                     Swal.fire({
@@ -281,7 +340,7 @@
                     });
                 }
             },
-            error: function(error) {
+            error: function (error) {
 
                 spanErrores(error);
             }
@@ -291,10 +350,11 @@
 
     function mostrarPassword(value) {
         console.log(value.substring(0, 2));
-        document.getElementById('password_label').innerHTML = 'Contraseña por defecto : ' + normalize(value.substring(0, 2)) + '.123456';
+        document.getElementById('password_label').innerHTML = 'Contraseña por defecto : ' + normalize(value.substring(0,
+            2)) + '.123456';
     }
 
-    var normalize = (function() {
+    var normalize = (function () {
         var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç",
             to = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
             mapping = {};
@@ -302,7 +362,7 @@
         for (var i = 0, j = from.length; i < j; i++)
             mapping[from.charAt(i)] = to.charAt(i);
 
-        return function(str) {
+        return function (str) {
             var ret = [];
             for (var i = 0, j = str.length; i < j; i++) {
                 var c = str.charAt(i);
@@ -315,4 +375,5 @@
         }
 
     })();
+
 </script>

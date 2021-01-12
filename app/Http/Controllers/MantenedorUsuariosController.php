@@ -27,6 +27,8 @@ use App\DepartamentoUsuario;
 
 use App\CambioUsuario;
 use App\TipoUsuario;
+use App\Modulo;
+use App\ModuloUsuario;
 use App\Helpers\utilidades;
 use App\Rules\RutValido;
 
@@ -59,21 +61,22 @@ class MantenedorUsuariosController extends Controller
         $sub_direcciones = SubDireccion::all();
         $unidades = Unidad::all();
         $tipos_usuario = TipoUsuario::all();
+        $modulos = Modulo::all();
         return view('mantenedorUsuarios/modalVerAgregar')
             ->with('departamentos', $departamentos)
             ->with('instituciones', $instituciones)
             ->with('direcciones', $direcciones)
             ->with('sub_direcciones', $sub_direcciones)
             ->with('unidades', $unidades)
-            ->with('tipos_usuario', $tipos_usuario);
+            ->with('tipos_usuario', $tipos_usuario)
+            ->with('modulos', $modulos);
     }
 
     public function agregar(Request $request)
     {
-        $rut = '/^([0-9]+)$/';
-
         //ASIGNA LOS DATOS DEL REQUEST A UNA NUEVA VARIABLE
         $data = $request->all();
+
         $validatedData = $request->validate(
             [
                 'rut' => ['required', 'max:11', new RutValido($data['rut'], $data['dv'])],
@@ -122,6 +125,52 @@ class MantenedorUsuariosController extends Controller
         $nueva_pw = $nueva_pw;
         $usuario->password =  Hash::make($nueva_pw);
         $usuario->save();
+
+        //OBTIENE LOS ID DE LOS MÓDULOS REGISTRADOS EN EL SISTEMA, POR ESTOS ID SE HACE EL MATCH
+        $modulos_id = Modulo::pluck('id', 'id')->toArray();
+
+        //ITERA SOBRE CADA UN DE ESTOS IDS
+        foreach ($modulos_id as $modulo_id) {
+
+            //CONSTRUYE LA KEY DEL USANDO EL ID DEL MÓDULO, ESTA KEY HARÁ EL MATCH CON EL ARRAY DE MÓDULOS QUE VIENE DE LA VISTA
+            $key_modulo = 'modulo_' . $modulo_id;
+
+            //SI EXISTE ESTA KEY, ENTONCES QUIERE DECIR QUE EN LA VISTA SI SE INGRESARON PERMISOS PARA ESTE MÓDULO
+            if (isset($data[$key_modulo])) {
+
+                //OBTIENE LOS PERMISOS INGRESADOS EN LA VISTA
+                $permisos_modulo = $data[$key_modulo];
+
+                //CREA EL NUEVO OBJETO MÓDULO USUARIO QUE TENDRA INFORMACION DE LOS PERMISOS DE USUARIO SOBRE LE MÓDULO
+                $nuevo_modulo_usuario = new ModuloUsuario();
+                //GUARDA EL ID DEL USUARIO
+                $nuevo_modulo_usuario->usuario_id = $usuario->id;
+                //GUARDA EL ID DEL MÓDULO
+                $nuevo_modulo_usuario->modulo_id = $modulo_id;
+                $nuevo_modulo_usuario->usuario_creador = $logeado->id;
+
+                //PREGUNTA SI ES QUE ESTÁ PRESENTE EL PERMISO LEER EN EL OBJETO, SI ESTÁ PRESENTE, GUARDA EL PERMISO LEER EN EL OBJETO MÓDULO USUARIO
+                //ESTO SE REPITE PARA LOS PERMISOS RESTANTES
+                if (in_array('leer', $permisos_modulo)) {
+                    $nuevo_modulo_usuario->leer = 1;
+                }
+
+                if (in_array('crear', $permisos_modulo)) {
+                    $nuevo_modulo_usuario->crear = 1;
+                }
+
+                if (in_array('editar', $permisos_modulo)) {
+                    $nuevo_modulo_usuario->editar = 1;
+                }
+
+                if (in_array('eliminar', $permisos_modulo)) {
+                    $nuevo_modulo_usuario->eliminar = 1;
+                }
+
+                //FINALMENTE GUARDAR EL OBJETO Y VUELVE A ITERAR PARA REALIZAR LO MISMO CON EL SIGUIENTE MÓDULO.
+                $nuevo_modulo_usuario->save();
+            }
+        }
 
         if (isset($data['instituciones'])) {
             foreach ($data['instituciones'] as $institucion) {
@@ -231,6 +280,11 @@ class MantenedorUsuariosController extends Controller
         $unidades = Unidad::all();
         $uu = UnidadUsuario::where('usuario_id', $id)->pluck('unidad_id')->toArray();
 
+        $modulos = Modulo::all();
+        $modulos_usuario = ModuloUsuario::where('usuario_id', $id)->get()->keyBy('modulo_id');
+
+        //dd($modulos,empty($modulos_usuario->toArray()));
+
         $tipos_usuario = TipoUsuario::all();
         return view('mantenedorUsuarios/modalVerEditar')
             ->with('usuario', $usuario)
@@ -244,11 +298,14 @@ class MantenedorUsuariosController extends Controller
             ->with('sdiu', $sdiu)
             ->with('du', $du)
             ->with('uu', $uu)
-            ->with('tipos_usuario', $tipos_usuario);
+            ->with('tipos_usuario', $tipos_usuario)
+            ->with('modulos', $modulos)
+            ->with('modulos_usuario', $modulos_usuario);
     }
 
     public function editar(Request $request)
     {
+        //dd(count(array_diff([1,3,4],[1,4,4])));
         $data = $request->all();
         $validatedData = $request->validate(
             [
@@ -309,7 +366,9 @@ class MantenedorUsuariosController extends Controller
             $cambio_unidad = $this->evaluarCambioUnidades($usuario, []);
         }
 
-        if (!$cambio_institucion && !$cambio_direccion  && !$cambio_sub_direccion  && !$cambio_departamento  && !$cambio_unidad && count($usuario->getDirty()) == 0) {
+        $cambio_permisos = $this->evaluarCambioPermisos(ModuloUsuario::where('usuario_id', $data['usuario_id'])->get(), $data);
+
+        if (!$cambio_institucion && !$cambio_direccion  && !$cambio_sub_direccion  && !$cambio_departamento  && !$cambio_unidad && !$cambio_permisos && count($usuario->getDirty()) == 0) {
             return 'sin_cambios';
         } else {
             $usuario = User::find($data['usuario_id']);
@@ -347,10 +406,11 @@ class MantenedorUsuariosController extends Controller
             //PARA CADA INSTITUCION, DIRECCION, DEPARTAMENTO, ETC. SE ELIMINAR LAS DEL USUARIO ANTERIOR U LUEGO SE ASIGNAN LAS NUEVAS
             //ESTO SE REALIZA PARA CADA MODIFICACION DE USUARIO, AUNQUE NO SE MODIFIQUEN INSTITUCION, DIRECCION, DEPARTAMENTO, ETC.
             //EL CAMBIO SE REALIZA IGUAL, YA QUE ESTOS DATOS ESTÁN ASIGNADOS AL USUARIO ANTIGUO (REGISTRO ANTIGUO DEL USUARIO)
-            InstitucionUsuario::where('usuario_id', $data['usuario_id'])->delete();
+
 
             //UNA VEZ ELIMINADOS, SE PROCEDE A LA ASIGNACION DE LOS VALORES AL NUEVO REGISTRO DEL USUARIO ACTUALIZADO
             if (isset($data['instituciones'])) {
+                InstitucionUsuario::where('usuario_id', $data['usuario_id'])->delete();
                 foreach ($data['instituciones'] as $institucion) {
                     $inst = new InstitucionUsuario();
                     $inst->usuario_id = $usuario_nuevo->id;
@@ -401,6 +461,55 @@ class MantenedorUsuariosController extends Controller
                     $du->departamento_id = $dp;
                     $du->creador_id = $logeado->id;
                     $du->save();
+                }
+            }
+
+            if ($cambio_permisos) {
+                ModuloUsuario::where('usuario_id', $data['usuario_id'])->delete();
+                //OBTIENE LOS ID DE LOS MÓDULOS REGISTRADOS EN EL SISTEMA, POR ESTOS ID SE HACE EL MATCH
+                $modulos_id = Modulo::pluck('id', 'id')->toArray();
+
+                //ITERA SOBRE CADA UN DE ESTOS IDS
+                foreach ($modulos_id as $modulo_id) {
+
+                    //CONSTRUYE LA KEY DEL USANDO EL ID DEL MÓDULO, ESTA KEY HARÁ EL MATCH CON EL ARRAY DE MÓDULOS QUE VIENE DE LA VISTA
+                    $key_modulo = 'modulo_' . $modulo_id;
+
+                    //SI EXISTE ESTA KEY, ENTONCES QUIERE DECIR QUE EN LA VISTA SI SE INGRESARON PERMISOS PARA ESTE MÓDULO
+                    if (isset($data[$key_modulo])) {
+
+                        //OBTIENE LOS PERMISOS INGRESADOS EN LA VISTA
+                        $permisos_modulo = $data[$key_modulo];
+
+                        //CREA EL NUEVO OBJETO MÓDULO USUARIO QUE TENDRA INFORMACION DE LOS PERMISOS DE USUARIO SOBRE LE MÓDULO
+                        $nuevo_modulo_usuario = new ModuloUsuario();
+                        //GUARDA EL ID DEL USUARIO
+                        $nuevo_modulo_usuario->usuario_id = $usuario_nuevo->id;
+                        //GUARDA EL ID DEL MÓDULO
+                        $nuevo_modulo_usuario->modulo_id = $modulo_id;
+                        $nuevo_modulo_usuario->usuario_creador = $logeado->id;
+
+                        //PREGUNTA SI ES QUE ESTÁ PRESENTE EL PERMISO LEER EN EL OBJETO, SI ESTÁ PRESENTE, GUARDA EL PERMISO LEER EN EL OBJETO MÓDULO USUARIO
+                        //ESTO SE REPITE PARA LOS PERMISOS RESTANTES
+                        if (in_array('leer', $permisos_modulo)) {
+                            $nuevo_modulo_usuario->leer = 1;
+                        }
+
+                        if (in_array('crear', $permisos_modulo)) {
+                            $nuevo_modulo_usuario->crear = 1;
+                        }
+
+                        if (in_array('editar', $permisos_modulo)) {
+                            $nuevo_modulo_usuario->editar = 1;
+                        }
+
+                        if (in_array('eliminar', $permisos_modulo)) {
+                            $nuevo_modulo_usuario->eliminar = 1;
+                        }
+
+                        //FINALMENTE GUARDAR EL OBJETO Y VUELVE A ITERAR PARA REALIZAR LO MISMO CON EL SIGUIENTE MÓDULO.
+                        $nuevo_modulo_usuario->save();
+                    }
                 }
             }
         }
@@ -547,7 +656,8 @@ class MantenedorUsuariosController extends Controller
         return 'usuario_recuperado';
     }
 
-    public function verOtrosDetalles($id){
+    public function verOtrosDetalles($id)
+    {
         $usuario = User::find($id);
         //dd(is_string($usuario->obtenerInstituciones()));
         return view('mantenedorUsuarios/modalVerOtrosDetalles')->with('usuario', $usuario);
@@ -596,5 +706,60 @@ class MantenedorUsuariosController extends Controller
         } else {
             return true;
         }
+    }
+
+    public static function evaluarCambioPermisos($antiguo, $data)
+    {
+        $modificado = false;
+        $modulos = Modulo::all();
+
+        foreach ($modulos as $modulo) {
+
+
+            $anterior = $antiguo->where('modulo_id', $modulo->id)->first();
+            // if($modulo->id == 2){
+            //     dd($anterior);
+            // }
+            if ($anterior != null) {
+                
+                
+                $array = [];
+                if ($anterior->leer == 1) {
+                    array_push($array, 'leer');
+                }
+
+                if ($anterior->crear == 1) {
+                    array_push($array, 'crear');
+                }
+
+                if ($anterior->editar == 1) {
+                    array_push($array, 'editar');
+                }
+
+                if ($anterior->eliminar == 1) {
+                    array_push($array, 'eliminar');
+                }
+
+                $anterior = implode(',', $array);
+            } else {
+                $anterior = [];
+                $anterior = implode(',', $anterior);
+            }
+
+            if (isset($data['modulo_' . $modulo->id])) {
+                $siguiente = $data['modulo_' . $modulo->id];
+            } else {
+                $siguiente = [];
+            }
+
+            $siguiente = implode(',', $siguiente);
+
+            if ($anterior !=  $siguiente) {
+                $modificado = true;
+            }
+        
+        }
+
+        return $modificado;
     }
 }
