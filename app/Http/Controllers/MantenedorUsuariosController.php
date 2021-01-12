@@ -464,52 +464,51 @@ class MantenedorUsuariosController extends Controller
                 }
             }
 
-            if ($cambio_permisos) {
-                ModuloUsuario::where('usuario_id', $data['usuario_id'])->delete();
-                //OBTIENE LOS ID DE LOS MÓDULOS REGISTRADOS EN EL SISTEMA, POR ESTOS ID SE HACE EL MATCH
-                $modulos_id = Modulo::pluck('id', 'id')->toArray();
 
-                //ITERA SOBRE CADA UN DE ESTOS IDS
-                foreach ($modulos_id as $modulo_id) {
+            ModuloUsuario::where('usuario_id', $data['usuario_id'])->delete();
+            //OBTIENE LOS ID DE LOS MÓDULOS REGISTRADOS EN EL SISTEMA, POR ESTOS ID SE HACE EL MATCH
+            $modulos_id = Modulo::pluck('id', 'id')->toArray();
 
-                    //CONSTRUYE LA KEY DEL USANDO EL ID DEL MÓDULO, ESTA KEY HARÁ EL MATCH CON EL ARRAY DE MÓDULOS QUE VIENE DE LA VISTA
-                    $key_modulo = 'modulo_' . $modulo_id;
+            //ITERA SOBRE CADA UN DE ESTOS IDS
+            foreach ($modulos_id as $modulo_id) {
 
-                    //SI EXISTE ESTA KEY, ENTONCES QUIERE DECIR QUE EN LA VISTA SI SE INGRESARON PERMISOS PARA ESTE MÓDULO
-                    if (isset($data[$key_modulo])) {
+                //CONSTRUYE LA KEY DEL USANDO EL ID DEL MÓDULO, ESTA KEY HARÁ EL MATCH CON EL ARRAY DE MÓDULOS QUE VIENE DE LA VISTA
+                $key_modulo = 'modulo_' . $modulo_id;
 
-                        //OBTIENE LOS PERMISOS INGRESADOS EN LA VISTA
-                        $permisos_modulo = $data[$key_modulo];
+                //SI EXISTE ESTA KEY, ENTONCES QUIERE DECIR QUE EN LA VISTA SI SE INGRESARON PERMISOS PARA ESTE MÓDULO
+                if (isset($data[$key_modulo])) {
 
-                        //CREA EL NUEVO OBJETO MÓDULO USUARIO QUE TENDRA INFORMACION DE LOS PERMISOS DE USUARIO SOBRE LE MÓDULO
-                        $nuevo_modulo_usuario = new ModuloUsuario();
-                        //GUARDA EL ID DEL USUARIO
-                        $nuevo_modulo_usuario->usuario_id = $usuario_nuevo->id;
-                        //GUARDA EL ID DEL MÓDULO
-                        $nuevo_modulo_usuario->modulo_id = $modulo_id;
-                        $nuevo_modulo_usuario->usuario_creador = $logeado->id;
+                    //OBTIENE LOS PERMISOS INGRESADOS EN LA VISTA
+                    $permisos_modulo = $data[$key_modulo];
 
-                        //PREGUNTA SI ES QUE ESTÁ PRESENTE EL PERMISO LEER EN EL OBJETO, SI ESTÁ PRESENTE, GUARDA EL PERMISO LEER EN EL OBJETO MÓDULO USUARIO
-                        //ESTO SE REPITE PARA LOS PERMISOS RESTANTES
-                        if (in_array('leer', $permisos_modulo)) {
-                            $nuevo_modulo_usuario->leer = 1;
-                        }
+                    //CREA EL NUEVO OBJETO MÓDULO USUARIO QUE TENDRA INFORMACION DE LOS PERMISOS DE USUARIO SOBRE LE MÓDULO
+                    $nuevo_modulo_usuario = new ModuloUsuario();
+                    //GUARDA EL ID DEL USUARIO
+                    $nuevo_modulo_usuario->usuario_id = $usuario_nuevo->id;
+                    //GUARDA EL ID DEL MÓDULO
+                    $nuevo_modulo_usuario->modulo_id = $modulo_id;
+                    $nuevo_modulo_usuario->usuario_creador = $logeado->id;
 
-                        if (in_array('crear', $permisos_modulo)) {
-                            $nuevo_modulo_usuario->crear = 1;
-                        }
-
-                        if (in_array('editar', $permisos_modulo)) {
-                            $nuevo_modulo_usuario->editar = 1;
-                        }
-
-                        if (in_array('eliminar', $permisos_modulo)) {
-                            $nuevo_modulo_usuario->eliminar = 1;
-                        }
-
-                        //FINALMENTE GUARDAR EL OBJETO Y VUELVE A ITERAR PARA REALIZAR LO MISMO CON EL SIGUIENTE MÓDULO.
-                        $nuevo_modulo_usuario->save();
+                    //PREGUNTA SI ES QUE ESTÁ PRESENTE EL PERMISO LEER EN EL OBJETO, SI ESTÁ PRESENTE, GUARDA EL PERMISO LEER EN EL OBJETO MÓDULO USUARIO
+                    //ESTO SE REPITE PARA LOS PERMISOS RESTANTES
+                    if (in_array('leer', $permisos_modulo)) {
+                        $nuevo_modulo_usuario->leer = 1;
                     }
+
+                    if (in_array('crear', $permisos_modulo)) {
+                        $nuevo_modulo_usuario->crear = 1;
+                    }
+
+                    if (in_array('editar', $permisos_modulo)) {
+                        $nuevo_modulo_usuario->editar = 1;
+                    }
+
+                    if (in_array('eliminar', $permisos_modulo)) {
+                        $nuevo_modulo_usuario->eliminar = 1;
+                    }
+
+                    //FINALMENTE GUARDAR EL OBJETO Y VUELVE A ITERAR PARA REALIZAR LO MISMO CON EL SIGUIENTE MÓDULO.
+                    $nuevo_modulo_usuario->save();
                 }
             }
         }
@@ -659,8 +658,14 @@ class MantenedorUsuariosController extends Controller
     public function verOtrosDetalles($id)
     {
         $usuario = User::find($id);
+        $modulos = Modulo::all();
+        $modulos_usuario = ModuloUsuario::where('usuario_id', $id)->withTrashed()->get()->keyBy('modulo_id');
+        // dd($modulos_usuario);
         //dd(is_string($usuario->obtenerInstituciones()));
-        return view('mantenedorUsuarios/modalVerOtrosDetalles')->with('usuario', $usuario);
+        return view('mantenedorUsuarios/modalVerOtrosDetalles')
+            ->with('usuario', $usuario)
+            ->with('modulos', $modulos)
+            ->with('modulos_usuario', $modulos_usuario);
     }
 
     public static function evaluarCambioInstituciones($antiguo, $actualizado)
@@ -721,8 +726,8 @@ class MantenedorUsuariosController extends Controller
             //     dd($anterior);
             // }
             if ($anterior != null) {
-                
-                
+
+
                 $array = [];
                 if ($anterior->leer == 1) {
                     array_push($array, 'leer');
@@ -757,7 +762,6 @@ class MantenedorUsuariosController extends Controller
             if ($anterior !=  $siguiente) {
                 $modificado = true;
             }
-        
         }
 
         return $modificado;
