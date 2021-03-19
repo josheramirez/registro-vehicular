@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function ContentProfile() {
+const ContentProfile=()=> {
     return (
         <div>
-            <div className="content-wrapper">
+            {/* Content Wrapper. Contains page content */}
+            <div className="content-wrapper" style={{minHeight: '1665.6px'}}>
             {/* Content Header (Page header) */}
             <section className="content-header">
                 <div className="container-fluid">
@@ -25,63 +26,63 @@ export default function ContentProfile() {
                 <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-3">
-                    {/* Profile Image */}
-                    <div className="card card-primary card-outline">
-                        <div className="card-body box-profile">
-                        <div className="text-center">
-                            <img className="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture" />
+                        {/* Profile Image */}
+                        <div className="card card-primary card-outline">
+                            <div className="card-body box-profile">
+                            <div className="text-center">
+                                <img className="profile-user-img img-fluid img-circle" src="/dist/img/user4-128x128.jpg" alt="User profile picture" />
+                            </div>
+                            <h3 className="profile-username text-center">Nina Mcintire</h3>
+                            <p className="text-muted text-center">Software Engineer</p>
+                            <ul className="list-group list-group-unbordered mb-3">
+                                <li className="list-group-item">
+                                <b>Followers</b> <a className="float-right">1,322</a>
+                                </li>
+                                <li className="list-group-item">
+                                <b>Following</b> <a className="float-right">543</a>
+                                </li>
+                                <li className="list-group-item">
+                                <b>Friends</b> <a className="float-right">13,287</a>
+                                </li>
+                            </ul>
+                            <a href="#" className="btn btn-primary btn-block"><b>Follow</b></a>
+                            </div>
+                            {/* /.card-body */}
                         </div>
-                        <h3 className="profile-username text-center">Nina Mcintire</h3>
-                        <p className="text-muted text-center">Software Engineer</p>
-                        <ul className="list-group list-group-unbordered mb-3">
-                            <li className="list-group-item">
-                            <b>Followers</b> <a className="float-right">1,322</a>
-                            </li>
-                            <li className="list-group-item">
-                            <b>Following</b> <a className="float-right">543</a>
-                            </li>
-                            <li className="list-group-item">
-                            <b>Friends</b> <a className="float-right">13,287</a>
-                            </li>
-                        </ul>
-                        <a href="#" className="btn btn-primary btn-block"><b>Follow</b></a>
+                        {/* /.card */}
+                        {/* About Me Box */}
+                        <div className="card card-primary">
+                            <div className="card-header">
+                            <h3 className="card-title">About Me</h3>
+                            </div>
+                            {/* /.card-header */}
+                            <div className="card-body">
+                            <strong><i className="fas fa-book mr-1" /> Education</strong>
+                            <p className="text-muted">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                            </p>
+                            <hr />
+                            <strong><i className="fas fa-map-marker-alt mr-1" /> Location</strong>
+                            <p className="text-muted">Malibu, California</p>
+                            <hr />
+                            <strong><i className="fas fa-pencil-alt mr-1" /> Skills</strong>
+                            <p className="text-muted">
+                                <span className="tag tag-danger">UI Design</span>
+                                <span className="tag tag-success">Coding</span>
+                                <span className="tag tag-info">Javascript</span>
+                                <span className="tag tag-warning">PHP</span>
+                                <span className="tag tag-primary">Node.js</span>
+                            </p>
+                            <hr />
+                            <strong><i className="far fa-file-alt mr-1" /> Notes</strong>
+                            <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                            </div>
+                            {/* /.card-body */}
                         </div>
-                        {/* /.card-body */}
-                    </div>
-                    {/* /.card */}
-                    {/* About Me Box */}
-                    <div className="card card-primary">
-                        <div className="card-header">
-                        <h3 className="card-title">About Me</h3>
-                        </div>
-                        {/* /.card-header */}
-                        <div className="card-body">
-                        <strong><i className="fas fa-book mr-1" /> Education</strong>
-                        <p className="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                        </p>
-                        <hr />
-                        <strong><i className="fas fa-map-marker-alt mr-1" /> Location</strong>
-                        <p className="text-muted">Malibu, California</p>
-                        <hr />
-                        <strong><i className="fas fa-pencil-alt mr-1" /> Skills</strong>
-                        <p className="text-muted">
-                            <span className="tag tag-danger">UI Design</span>
-                            <span className="tag tag-success">Coding</span>
-                            <span className="tag tag-info">Javascript</span>
-                            <span className="tag tag-warning">PHP</span>
-                            <span className="tag tag-primary">Node.js</span>
-                        </p>
-                        <hr />
-                        <strong><i className="far fa-file-alt mr-1" /> Notes</strong>
-                        <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-                        </div>
-                        {/* /.card-body */}
-                    </div>
-                    {/* /.card */}
+                        {/* /.card */}
                     </div>
                     {/* /.col */}
-                    <div className="col-md-9">
+                    <div className="col-md-6">
                     <div className="card">
                         <div className="card-header p-2">
                         <ul className="nav nav-pills">
@@ -96,7 +97,7 @@ export default function ContentProfile() {
                             {/* Post */}
                             <div className="post">
                                 <div className="user-block">
-                                <img className="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image" />
+                                <img className="img-circle img-bordered-sm" src="/dist/img/user1-128x128.jpg" alt="user image" />
                                 <span className="username">
                                     <a href="#">Jonathan Burke Jr.</a>
                                     <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
@@ -126,7 +127,7 @@ export default function ContentProfile() {
                             {/* Post */}
                             <div className="post clearfix">
                                 <div className="user-block">
-                                <img className="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image" />
+                                <img className="img-circle img-bordered-sm" src="/dist/img/user7-128x128.jpg" alt="User Image" />
                                 <span className="username">
                                     <a href="#">Sarah Ross</a>
                                     <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
@@ -154,7 +155,7 @@ export default function ContentProfile() {
                             {/* Post */}
                             <div className="post">
                                 <div className="user-block">
-                                <img className="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image" />
+                                <img className="img-circle img-bordered-sm" src="/dist/img/user6-128x128.jpg" alt="User Image" />
                                 <span className="username">
                                     <a href="#">Adam Jones</a>
                                     <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
@@ -164,19 +165,19 @@ export default function ContentProfile() {
                                 {/* /.user-block */}
                                 <div className="row mb-3">
                                 <div className="col-sm-6">
-                                    <img className="img-fluid" src="../../dist/img/photo1.png" alt="Photo" />
+                                    <img className="img-fluid" src="/dist/img/photo1.png" alt="Photo" />
                                 </div>
                                 {/* /.col */}
                                 <div className="col-sm-6">
                                     <div className="row">
                                     <div className="col-sm-6">
-                                        <img className="img-fluid mb-3" src="../../dist/img/photo2.png" alt="Photo" />
-                                        <img className="img-fluid" src="../../dist/img/photo3.jpg" alt="Photo" />
+                                        <img className="img-fluid mb-3" src="/dist/img/photo2.png" alt="Photo" />
+                                        <img className="img-fluid" src="/dist/img/photo3.jpg" alt="Photo" />
                                     </div>
                                     {/* /.col */}
                                     <div className="col-sm-6">
-                                        <img className="img-fluid mb-3" src="../../dist/img/photo4.jpg" alt="Photo" />
-                                        <img className="img-fluid" src="../../dist/img/photo1.png" alt="Photo" />
+                                        <img className="img-fluid mb-3" src="/dist/img/photo4.jpg" alt="Photo" />
+                                        <img className="img-fluid" src="/dist/img/photo1.png" alt="Photo" />
                                     </div>
                                     {/* /.col */}
                                     </div>
@@ -339,14 +340,70 @@ export default function ContentProfile() {
                     {/* /.card */}
                     </div>
                     {/* /.col */}
+                    <div className="col-md-3">
+                        {/* Profile Image */}
+                        <div className="card card-primary card-outline">
+                            <div className="card-body box-profile">
+                            <div className="text-center">
+                                <img className="profile-user-img img-fluid img-circle" src="/dist/img/user4-128x128.jpg" alt="User profile picture" />
+                            </div>
+                            <h3 className="profile-username text-center">Nina Mcintire</h3>
+                            <p className="text-muted text-center">Software Engineer</p>
+                            <ul className="list-group list-group-unbordered mb-3">
+                                <li className="list-group-item">
+                                <b>Followers</b> <a className="float-right">1,322</a>
+                                </li>
+                                <li className="list-group-item">
+                                <b>Following</b> <a className="float-right">543</a>
+                                </li>
+                                <li className="list-group-item">
+                                <b>Friends</b> <a className="float-right">13,287</a>
+                                </li>
+                            </ul>
+                            <a href="#" className="btn btn-primary btn-block"><b>Follow</b></a>
+                            </div>
+                            {/* /.card-body */}
+                        </div>
+                        {/* /.card */}
+                        {/* About Me Box */}
+                        <div className="card card-primary">
+                            <div className="card-header">
+                            <h3 className="card-title">About Me</h3>
+                            </div>
+                            {/* /.card-header */}
+                            <div className="card-body">
+                            <strong><i className="fas fa-book mr-1" /> Education</strong>
+                            <p className="text-muted">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                            </p>
+                            <hr />
+                            <strong><i className="fas fa-map-marker-alt mr-1" /> Location</strong>
+                            <p className="text-muted">Malibu, California</p>
+                            <hr />
+                            <strong><i className="fas fa-pencil-alt mr-1" /> Skills</strong>
+                            <p className="text-muted">
+                                <span className="tag tag-danger">UI Design</span>
+                                <span className="tag tag-success">Coding</span>
+                                <span className="tag tag-info">Javascript</span>
+                                <span className="tag tag-warning">PHP</span>
+                                <span className="tag tag-primary">Node.js</span>
+                            </p>
+                            <hr />
+                            <strong><i className="far fa-file-alt mr-1" /> Notes</strong>
+                            <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                            </div>
+                            {/* /.card-body */}
+                        </div>
+                        {/* /.card */}
+                    </div>
                 </div>
                 {/* /.row */}
                 </div>{/* /.container-fluid */}
             </section>
             {/* /.content */}
             </div>
-
+            {/* /.content-wrapper */}
         </div>
     )
 }
-
+export default ContentProfile

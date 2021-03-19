@@ -2,15 +2,13 @@ import React from 'react'
 
 export default function MainFooter() {
     return (
-        <div>
-              <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.13
-    </div>
-    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
-    reserved.
-  </footer>
-        </div>
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.1.0-rc
+            </div>
+            <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+        </footer>
     )
 }
 
