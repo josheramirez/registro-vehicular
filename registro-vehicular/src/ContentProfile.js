@@ -1,6 +1,7 @@
 import React from 'react'
 
 const ContentProfile=()=> {
+
     return (
         <div>
             {/* Content Wrapper. Contains page content */}
@@ -26,60 +27,326 @@ const ContentProfile=()=> {
                 <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-3">
-                        {/* Profile Image */}
-                        <div className="card card-primary card-outline">
-                            <div className="card-body box-profile">
-                            <div className="text-center">
-                                <img className="profile-user-img img-fluid img-circle" src="/dist/img/user4-128x128.jpg" alt="User profile picture" />
-                            </div>
-                            <h3 className="profile-username text-center">Nina Mcintire</h3>
-                            <p className="text-muted text-center">Software Engineer</p>
-                            <ul className="list-group list-group-unbordered mb-3">
-                                <li className="list-group-item">
-                                <b>Followers</b> <a className="float-right">1,322</a>
-                                </li>
-                                <li className="list-group-item">
-                                <b>Following</b> <a className="float-right">543</a>
-                                </li>
-                                <li className="list-group-item">
-                                <b>Friends</b> <a className="float-right">13,287</a>
-                                </li>
-                            </ul>
-                            <a href="#" className="btn btn-primary btn-block"><b>Follow</b></a>
-                            </div>
-                            {/* /.card-body */}
-                        </div>
-                        {/* /.card */}
-                        {/* About Me Box */}
+                        {/* Drougs Offers Box */}
                         <div className="card card-primary">
                             <div className="card-header">
-                            <h3 className="card-title">About Me</h3>
+                                <h3 className="card-title">Medicamentos</h3>
                             </div>
-                            {/* /.card-header */}
-                            <div className="card-body">
-                            <strong><i className="fas fa-book mr-1" /> Education</strong>
-                            <p className="text-muted">
-                                B.S. in Computer Science from the University of Tennessee at Knoxville
-                            </p>
-                            <hr />
-                            <strong><i className="fas fa-map-marker-alt mr-1" /> Location</strong>
-                            <p className="text-muted">Malibu, California</p>
-                            <hr />
-                            <strong><i className="fas fa-pencil-alt mr-1" /> Skills</strong>
-                            <p className="text-muted">
-                                <span className="tag tag-danger">UI Design</span>
-                                <span className="tag tag-success">Coding</span>
-                                <span className="tag tag-info">Javascript</span>
-                                <span className="tag tag-warning">PHP</span>
-                                <span className="tag tag-primary">Node.js</span>
-                            </p>
-                            <hr />
-                            <strong><i className="far fa-file-alt mr-1" /> Notes</strong>
-                            <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                            {/* drug */}
+                            <div className="drug-item user-block" 
+                                style={{
+                                display:'flex',
+                                justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                            >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/drugs/drug_7.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Paracetamol 200mg</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Salcobrand</span>
+                                </div>
+                                <div className="value-variation"  style={{display:'flex',flexDirection:'row'}}>
+                                    <span style={{color: 'red'}}><i class="fas fa-chevron-down"></i></span>
+                                    <span style={{color: 'red', marginLeft:5}}>14%</span>
+                                </div>
                             </div>
+                            <div className="drug-item user-block" 
+                                style={{
+                                display:'flex',
+                                justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                            >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/drugs/drug_9.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Paracetamol 200mg</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Doctor Simi</span>
+                                </div>
+                                <div className="value-variation"  style={{display:'flex',flexDirection:'row'}}>
+                                    <span style={{color: 'red'}}><i class="fas fa-chevron-down"></i></span>
+                                    <span style={{color: 'red', marginLeft:5}}>23%</span>
+                                </div>
+                            </div>
+                            <div className="drug-item user-block" 
+                                style={{
+                                display:'flex',
+                                justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                            >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/drugs/drug_2.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Paracetamol 200mg</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Doctor Simi</span>
+                                </div>
+                                <div className="value-variation"  style={{display:'flex',flexDirection:'row'}}>
+                                    <span style={{color: 'red'}}><i class="fas fa-chevron-down"></i></span>
+                                    <span style={{color: 'red', marginLeft:5}}>20%</span>
+                                </div>
+                            </div>
+                            <div className="drug-item user-block" 
+                                style={{
+                                display:'flex',
+                                justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                            >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/drugs/drug_5.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Paracetamol 200mg</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Cruz verde</span>
+                                </div>
+                                <div className="value-variation"  style={{display:'flex',flexDirection:'row'}}>
+                                    <span style={{color: 'red'}}><i class="fas fa-chevron-down"></i></span>
+                                    <span style={{color: 'red', marginLeft:5}}>06%</span>
+                                </div>
+                            </div>
+                            <div className="drug-item user-block" 
+                                style={{
+                                display:'flex',
+                                justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                            >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/drugs/drug_4.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Paracetamol 200mg</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Doctor Simi</span>
+                                </div>
+                                <div className="value-variation"  style={{display:'flex',flexDirection:'row'}}>
+                                    <span style={{color: 'red'}}><i class="fas fa-chevron-down"></i></span>
+                                    <span style={{color: 'red', marginLeft:5}}>20%</span>
+                                </div>
+                            </div>
+                            
                             {/* /.card-body */}
                         </div>
                         {/* /.card */}
+
+                        {/* New Proffetionals Box */}
+                        <div className="card card-primary">
+                            <div className="card-header">
+                                <h3 className="card-title">Ultimos Profesionales</h3>
+                            </div>
+                            {/* /.card-header */}
+
+                            <div className="professional-item user-block" 
+                                style={{
+                                display:'flex',
+                                // justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                                >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/professionals/pro_4.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Cardiologia</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Maria Sofia Izquierdo</span>
+                                </div>
+                                <div className="pay-method" style={{marginLeft:'auto',width:70,display:'flex'}}>
+                                    <div className="value-variation"  style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                    <div className="fonasa pay-option" style={{
+                                       borderRadius: 100,
+                                       width: 20,
+                                       height: 20,
+                                       backgroundColor: '#64b3e3',
+                                       textAlign: 'center',
+                                       lineHeight:1.4,
+                                        fontSize:14,
+                                        marginLeft:3,
+                                        color:'#4d4d4d',
+                                        cursor:'pointer'
+                                    }}>F</div>
+                                    <div className="isapre pay-option"style={{
+                                       borderRadius: 100,
+                                       width: 20,
+                                       height: 20,
+                                       backgroundColor: '#5ABA4A',
+                                       textAlign: 'center',
+                                       lineHeight:1.4,
+                                        fontSize:14,
+                                        marginLeft:3,
+                                        color:'#4d4d4d',
+                                        cursor:'pointer'
+                                    }}>I</div>
+                                    <div className="private pay-option"style={{
+                                       borderRadius: 100,
+                                       width: 20,
+                                       height: 20,
+                                       backgroundColor: '#F7CC3B',
+                                       textAlign: 'center',
+                                       lineHeight:1.4,
+                                        fontSize:14,
+                                        marginLeft:3,
+                                        color:'#4d4d4d',
+                                        cursor:'pointer'
+                                    }}>P</div>
+                                </div>
+                                </div>
+                            </div>
+                            <div className="professional-item user-block" 
+                                style={{
+                                display:'flex',
+                                // justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                                >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/professionals/pro_11.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Paramedico</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Javier Castro Gonzales</span>
+                                </div>
+                                <div className="pay-method" style={{marginLeft:'auto',width:70,display:'flex'}}>
+                                    <div className="value-variation"  style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                        <div className="fonasa pay-option" style={{
+                                        borderRadius: 100,
+                                        width: 20,
+                                        height: 20,
+                                        backgroundColor: '#64b3e3',
+                                        textAlign: 'center',
+                                        lineHeight:1.4,
+                                            fontSize:14,
+                                            marginLeft:3,
+                                            color:'#4d4d4d',
+                                            cursor:'pointer'
+                                        }}>F</div>
+                                         <div className="private pay-option"style={{
+                                       borderRadius: 100,
+                                       width: 20,
+                                       height: 20,
+                                       backgroundColor: '#F7CC3B',
+                                       textAlign: 'center',
+                                       lineHeight:1.4,
+                                        fontSize:14,
+                                        marginLeft:3,
+                                        color:'#4d4d4d',
+                                        cursor:'pointer'
+                                    }}>P</div>
+                                                            
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="professional-item user-block" 
+                                style={{
+                                display:'flex',
+                                // justifyContent:'space-between',
+                                paddingTop:10,
+                                paddingBottom:10,
+                                paddingLeft:15,
+                                paddingRight:15
+                                }}
+                                >
+                                <img className="img-circle img-bordered-sm" src="/dist/img/professionals/pro_10.jpg" alt="user image"
+                                    style={{
+                                        height:40,
+                                        width:40
+                                    }}
+                                />
+                                <div className="item-info" style={{float:'left'}}>
+                                    <span className="username"  style={{marginLeft:10}}>
+                                        <a href="#" style={{fontSize:13}}>Teens</a>
+                                        <a href="#" className="float-right btn-tool"><i className="fas fa-times" /></a>
+                                    </span>
+                                    <span className="description" style={{marginLeft:10}}>Claudia Gomez Tapia</span>
+                                </div>
+                                <div className="pay-method" style={{marginLeft:'auto',width:70,display:'flex'}}>
+                                    <div className="value-variation"  style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                        <div className="fonasa pay-option" style={{
+                                        borderRadius: 100,
+                                        width: 20,
+                                        height: 20,
+                                        backgroundColor: '#64b3e3',
+                                        textAlign: 'center',
+                                        lineHeight:1.4,
+                                            fontSize:14,
+                                            marginLeft:3,
+                                            color:'#4d4d4d',
+                                            cursor:'pointer'
+                                        }}>F</div>
+                                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* /.card */}
+                        
+
                     </div>
                     {/* /.col */}
                     <div className="col-md-6">
